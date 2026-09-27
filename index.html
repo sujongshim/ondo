@@ -165,9 +165,13 @@
           </div>
 
           <!-- 오늘 누적 순공 요약 -->
-          <div class="flex justify-between items-center bg-stone-50 px-4 py-2.5 rounded-xl border border-stone-200 text-xs">
-            <span class="text-stone-500 font-semibold">오늘 누적 순공시간</span>
+          <div onclick="toggleStudyChart()" class="flex justify-between items-center bg-stone-50 px-4 py-2.5 rounded-xl border border-stone-200 text-xs cursor-pointer">
+            <span class="text-stone-500 font-semibold">오늘 누적 순공시간 <span class="text-emerald-700 underline">(그래프 보기)</span></span>
             <span id="today-total-time" class="font-extrabold text-emerald-800 font-mono text-base">00:00:00</span>
+          </div>
+          <div id="study-chart-container" class="hidden bg-stone-50 rounded-xl p-3 border border-stone-200">
+            <p class="text-[11px] text-stone-400 mb-1.5 font-semibold">최근 7일 순공 시간</p>
+            <div id="study-chart-svg"></div>
           </div>
         </div>
 
@@ -563,7 +567,7 @@
         activeBtn.classList.remove('bg-stone-100', 'text-stone-600');
         activeBtn.classList.add('bg-[#2E6B5B]', 'text-white', 'shadow-sm');
       }
-      document.getElementById('clock-status-label').innerText = `${subj} 실전 시험 (${mins}분)`;
+      document.getElementById('clock-status-label').innerText = subj === '뽀모도로' ? `집중 시간 (${mins}분)` : `${subj} 실전 시험 (${mins}분)`;
       resetClockTimer();
     }
 
@@ -583,6 +587,8 @@
     function updateClockDisplay() {
       document.getElementById('clock-display').innerText = formatMinSec(timeRemaining);
       document.getElementById('today-total-time').innerText = formatHourMinSec(totalStudySeconds);
+      const chartContainer = document.getElementById('study-chart-container');
+      if (chartContainer && !chartContainer.classList.contains('hidden')) renderStudyChart();
     }
 
     function toggleClockTimer() {
@@ -599,6 +605,10 @@
             timeRemaining--;
             totalStudySeconds++;
             localStorage.setItem('go3_total_study_sec', totalStudySeconds);
+            const log = JSON.parse(localStorage.getItem('go3_study_log')) || {};
+            const todayKey = new Date().toISOString().slice(0, 10);
+            log[todayKey] = (log[todayKey] || 0) + 1;
+            localStorage.setItem('go3_study_log', JSON.stringify(log));
           } else {
             clearInterval(timerInterval);
             isRunning = false;
@@ -782,6 +792,50 @@
         }
       });
       document.getElementById('sleep-chart-svg').innerHTML = `
+        <svg viewBox="0 0 ${svgW} 130" width="100%" height="130">
+          <line x1="0" y1="${goalY}" x2="${svgW}" y2="${goalY}" stroke="#D9782E" stroke-width="1" stroke-dasharray="3,3"/>
+          ${bars}
+        </svg>
+      `;
+    }
+
+    function toggleStudyChart() {
+      const container = document.getElementById('study-chart-container');
+      if (container.classList.contains('hidden')) {
+        container.classList.remove('hidden');
+        renderStudyChart();
+      } else {
+        container.classList.add('hidden');
+      }
+    }
+
+    function renderStudyChart() {
+      const log = JSON.parse(localStorage.getItem('go3_study_log')) || {};
+      const weekdayLabels = ['일', '월', '화', '수', '목', '금', '토'];
+      const days = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().slice(0, 10);
+        const hours = Math.round(((log[key] || 0) / 3600) * 10) / 10;
+        days.push({ label: weekdayLabels[d.getDay()], hours });
+      }
+      const maxH = 12, barW = 28, gap = 10, chartH = 100, baseY = 110, goalHours = 4;
+      const svgW = days.length * (barW + gap);
+      const goalY = baseY - (goalHours / maxH) * chartH;
+      let bars = '';
+      days.forEach((d, i) => {
+        const x = i * (barW + gap) + gap / 2;
+        const h = Math.min(d.hours / maxH, 1) * chartH;
+        const y = baseY - h;
+        const color = d.hours === 0 ? '#E3DED3' : (d.hours >= goalHours ? '#2E6B5B' : '#D9782E');
+        bars += `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="4" fill="${color}"/>`;
+        bars += `<text x="${x + barW / 2}" y="${baseY + 14}" font-size="10" text-anchor="middle" fill="#636B66">${d.label}</text>`;
+        if (d.hours > 0) {
+          bars += `<text x="${x + barW / 2}" y="${y - 4}" font-size="10" font-weight="700" text-anchor="middle" fill="#1F2421">${d.hours}h</text>`;
+        }
+      });
+      document.getElementById('study-chart-svg').innerHTML = `
         <svg viewBox="0 0 ${svgW} 130" width="100%" height="130">
           <line x1="0" y1="${goalY}" x2="${svgW}" y2="${goalY}" stroke="#D9782E" stroke-width="1" stroke-dasharray="3,3"/>
           ${bars}
@@ -1173,7 +1227,7 @@
 
     window.onload = initAll;
 
-    // --- 9. SITE STATS (누적 방문 / 다운로드) ---
+    // --- 9. SITE STATS (누적 방문) ---
     const SB_URL = 'https://wuqodlfpmuallhkbikeq.supabase.co';
     const SB_KEY = 'sb_publishable_BzzphVVA7kwUDH3Jmu-XWg_ifsvZNYJ';
     async function sbRpc(fn, params) {
@@ -1190,7 +1244,7 @@
       try {
         const rows = await sbRpc('ondo_get_counters');
         const byId = Object.fromEntries(rows.map(r => [r.id, r.count]));
-        document.getElementById('site-stats').textContent = `누적 방문 ${fmtCount(byId.visits)} · 누적 다운로드 ${fmtCount(byId.downloads)}`;
+        document.getElementById('site-stats').textContent = `누적 방문 ${fmtCount(byId.visits)}`;
       } catch (e) {
         document.getElementById('site-stats').textContent = '';
       }
