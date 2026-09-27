@@ -7,7 +7,7 @@
   
   <!-- Copyright & PWA Meta Tags -->
   <meta name="author" content="수쌤">
-  <meta name="copyright" content="© 2026 수쌤. All rights reserved.">
+  <meta name="copyright" content="© 2026 심수정. All rights reserved.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="온도">
@@ -393,10 +393,10 @@
     </div>
 
     <!-- 3. Footer -->
-    <footer class="mt-12 text-center text-xs text-stone-400 pb-8 border-t border-stone-200/80 pt-6 space-y-1.5">
-      <p class="text-[11px] text-stone-400">© 2026 수쌤. All rights reserved.</p>
+    <footer class="mt-12 text-center text-xs text-stone-400 pb-8 border-t border-stone-200/80 pt-6 space-y-1">
+      <p class="font-semibold text-stone-600">온도 : 학생들을 응원하는 마음으로 만든 작은 앱</p>
+      <p class="text-[11px] text-stone-400">© 2026 심수정. All rights reserved.</p>
       <p class="text-[11px] text-stone-400" id="site-stats" aria-live="polite"></p>
-      <button onclick="downloadAppHtml()" class="text-[11px] text-emerald-700 underline font-semibold">다운로드</button>
     </footer>
   </main>
 
@@ -1198,22 +1198,6 @@
     async function bumpVisit() {
       try { await sbRpc('ondo_increment_counter', { counter_id: 'visits' }); } catch (e) {}
       refreshStats();
-    }
-    async function bumpDownload() {
-      try { await sbRpc('ondo_increment_counter', { counter_id: 'downloads' }); } catch (e) {}
-      refreshStats();
-    }
-    function downloadAppHtml() {
-      const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = '온도.html';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 4000);
-      bumpDownload();
     }
   </script>
 </body>
