@@ -228,14 +228,14 @@
 
           <!-- 할 일 추가 폼 -->
           <div class="flex gap-2">
-            <select id="todo-subject-select" class="text-xs bg-stone-50 border border-stone-200 rounded-xl px-2.5 py-2 font-bold text-stone-700">
+            <select id="todo-subject-select" class="shrink-0 w-[72px] text-xs bg-stone-50 border border-stone-200 rounded-xl px-2 py-2 font-bold text-stone-700">
               <option value="국어">국어</option>
               <option value="수학">수학</option>
               <option value="영어">영어</option>
               <option value="탐구">탐구</option>
             </select>
-            <input id="todo-input" type="text" placeholder="오늘 완료할 공부 분량 입력..." class="flex-1 text-xs border border-stone-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-600">
-            <button onclick="addPlannerTodo()" class="bg-[#2E6B5B] hover:bg-emerald-900 text-white px-4 py-2 rounded-xl text-xs font-extrabold shrink-0 shadow-sm transition">추가</button>
+            <input id="todo-input" type="text" placeholder="오늘 완료할 공부 분량 입력..." class="flex-1 min-w-0 text-xs border border-stone-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-600">
+            <button onclick="addPlannerTodo()" class="shrink-0 bg-[#2E6B5B] hover:bg-emerald-900 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm transition">추가</button>
           </div>
 
           <!-- 오늘 할 일 목록 -->
