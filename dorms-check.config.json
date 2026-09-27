@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "온도",
-    "url": "",
+    "url": "https://ondo-omega.vercel.app",
     "stack": "정적 HTML"
   },
   "tracks": [
