@@ -10,7 +10,10 @@
   <meta name="copyright" content="© 2026 수쌤. All rights reserved.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="온도">
   <meta name="theme-color" content="#2E6B5B">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232E6B5B'/><text x='50' y='68' font-size='58' text-anchor='middle'>%F0%9F%8C%A1%EF%B8%8F</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232E6B5B'/><text x='50' y='68' font-size='58' text-anchor='middle'>%F0%9F%8C%A1%EF%B8%8F</text></svg>">
 
   <!-- 소확앱 팔레트 + 깔끔한 단일 서체: Noto Sans KR -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +38,7 @@
     }
   </script>
   <style>
-    body { font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; letter-spacing: -0.01em; }
+    body { font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; font-weight: 500; font-size: 15.5px; line-height: 1.55; letter-spacing: 0; -webkit-font-smoothing: antialiased; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
@@ -83,21 +86,17 @@
             <span>온도</span>
             <span class="text-xs bg-amber-400 text-stone-900 font-bold px-2 py-0.5 rounded-full">ON:DO</span>
           </h1>
-          <p class="text-[10px] text-emerald-200 leading-tight">몰입(ON) + 실천(DO) + 열정의 온도(溫度)</p>
+          <p class="text-[10px] text-emerald-200 leading-tight">몰입(ON) + 실천(DO) + 열정의 온도(溫度) + 교사의 온도(溫度)</p>
         </div>
       </div>
       
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 shrink-0">
         <!-- 🟡 노랑 명언함 버튼 -->
-        <button onclick="openQuoteArchiveModal()" class="bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold px-3.5 py-1.5 rounded-full text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95">
-          💬
+        <button onclick="openQuoteArchiveModal()" class="bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold px-3.5 py-1.5 rounded-full text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 shrink-0 whitespace-nowrap">
           <span>명언함</span>
         </button>
-        <!-- D-Day 버튼 -->
-        <button onclick="openDDayModal()" class="bg-[#1C4238] hover:bg-[#17362D] text-emerald-100 font-semibold px-3.5 py-1.5 rounded-full text-xs flex items-center gap-1.5 border border-emerald-600/50 shadow-sm transition active:scale-95">
-          <span id="header-dday-title">수능</span>
-          <span id="header-dday-val" class="text-amber-300 font-extrabold">D-Day</span>
-        </button>
+        <!-- D-Day 목록 (수능만 표시) -->
+        <div id="header-dday-list" onclick="openDDayModal()" class="flex items-center gap-1.5 cursor-pointer shrink-0 whitespace-nowrap"></div>
       </div>
     </div>
   </header>
@@ -105,22 +104,21 @@
   <!-- 2. Main Responsive Container (PC: max-w-6xl 2열 그리드, Mobile: 1열 반응형) -->
   <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-5">
     
-    <!-- 💌 수쌤이 전하는 오늘의 명언 배너 -->
-    <div class="bg-white border-2 border-emerald-100 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-      <div class="flex items-start sm:items-center gap-3 flex-1">
-        <span class="text-xs bg-emerald-100 text-emerald-900 font-extrabold px-3 py-1.5 rounded-xl shrink-0 border border-emerald-200 flex items-center gap-1.5">
-          ❤️
-          <span>수쌤이 전하는 오늘의 명언</span>
+    <!-- 💌 오늘의 명언 배너 -->
+    <div class="bg-white border-2 border-emerald-100 rounded-2xl p-4 shadow-sm space-y-2.5">
+      <div class="flex items-center justify-between gap-2">
+        <span class="text-sm bg-emerald-100 text-emerald-900 font-extrabold px-3 py-1.5 rounded-xl border border-emerald-200">
+          오늘의 명언
         </span>
-        <div class="text-xs font-medium text-stone-800 leading-snug">
-          <span id="banner-quote-text" class="font-serif font-bold text-stone-900 text-sm">"승리는 가장 끈기 있는 자에게 돌아간다."</span>
-          <span id="banner-quote-author" class="text-stone-500 text-xs ml-1.5 font-semibold">- 나폴레옹 -</span>
-          <span id="banner-quote-en" class="block text-stone-500 text-xs italic mt-0.5">(Victory belongs to the most persevering. - Napoleon)</span>
-        </div>
+        <button onclick="openQuotePopup(true)" class="text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold px-3 py-1.5 rounded-xl border border-amber-200 shrink-0 transition active:scale-95">
+          팝업 다시보기
+        </button>
       </div>
-      <button onclick="openQuotePopup(true)" class="self-end sm:self-center text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold px-3 py-1.5 rounded-xl border border-amber-200 shrink-0 flex items-center gap-1.5 transition active:scale-95">
-        <span>팝업 다시보기</span> ↗️
-      </button>
+      <div class="font-medium text-stone-800 leading-snug">
+        <span id="banner-quote-text" class="font-serif font-bold text-stone-900 text-base">"승리는 가장 끈기 있는 자에게 돌아간다."</span>
+        <span id="banner-quote-author" class="text-stone-500 text-sm ml-1.5 font-semibold">- 나폴레옹 -</span>
+        <span id="banner-quote-en" class="block text-stone-500 text-xs italic mt-1">(Victory belongs to the most persevering. - Napoleon)</span>
+      </div>
     </div>
 
     <!-- 🖥️ PC 화면 분할 그리드 (좌측: 타이머+수면+DDay / 우측: 플래너 달력+루틴 달력) -->
@@ -132,11 +130,12 @@
         <!-- [타이머 위젯] 레트로 탁상 전자시계 -->
         <div class="bg-white border-2 border-emerald-100 rounded-3xl p-5 shadow-sm space-y-4">
           <!-- 과목 / 교시 선택 탭 (초록 버튼) -->
-          <div class="grid grid-cols-4 gap-1.5 text-xs text-center font-bold">
-            <button onclick="applySubject('뽀모도로', 50)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200" id="tab-btn-뽀모도로">집중 50분</button>
-            <button onclick="applySubject('국어', 80)" class="subj-tab-btn p-2 rounded-xl bg-[#2E6B5B] text-white shadow-sm" id="tab-btn-국어">국어 80분</button>
-            <button onclick="applySubject('수학', 100)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200" id="tab-btn-수학">수학 100분</button>
-            <button onclick="applySubject('영어', 70)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200" id="tab-btn-영어">영어 70분</button>
+          <div class="grid grid-cols-5 gap-1.5 text-xs text-center font-bold">
+            <button onclick="applySubject('뽀모도로', 60, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">집중 1시간</button>
+            <button onclick="applySubject('국어', 80, this)" class="subj-tab-btn p-2 rounded-xl bg-[#2E6B5B] text-white shadow-sm">국어 80분</button>
+            <button onclick="applySubject('수학', 100, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">수학 100분</button>
+            <button onclick="applySubject('영어', 70, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">영어 70분</button>
+            <button onclick="applySubject('영어', 50, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">영어 50분</button>
           </div>
 
           <!-- 🔴 빨강 레트로 탁상 전자시계 그래픽 -->
@@ -158,10 +157,10 @@
           <!-- 타이머 조작 버튼 (🔴 시작 / 초기화) -->
           <div class="flex items-center justify-center gap-3 pt-1">
             <button id="clock-toggle-btn" onclick="toggleClockTimer()" class="flex-1 bg-red-500 hover:bg-red-600 active:scale-98 text-white py-3.5 rounded-2xl font-extrabold text-sm shadow-md flex items-center justify-center gap-2 border-2 border-stone-900 transition">
-              ▶️ <span>시작</span>
+              <span>시작</span>
             </button>
             <button onclick="resetClockTimer()" class="px-6 bg-stone-100 hover:bg-stone-200 active:scale-98 text-stone-700 py-3.5 rounded-2xl font-bold text-sm border-2 border-stone-900 flex items-center justify-center gap-1.5 transition">
-              🔄 <span>초기화</span>
+              <span>초기화</span>
             </button>
           </div>
 
@@ -170,6 +169,19 @@
             <span class="text-stone-500 font-semibold">오늘 누적 순공시간</span>
             <span id="today-total-time" class="font-extrabold text-emerald-800 font-mono text-base">00:00:00</span>
           </div>
+        </div>
+
+        <!-- 🗓️ 수험 핵심 D-Day 관리 카드 -->
+        <div class="bg-white border-2 border-emerald-100 rounded-2xl p-4 shadow-sm space-y-2.5">
+          <div class="flex justify-between items-center">
+            <h3 class="text-sm font-extrabold text-stone-800 flex items-center gap-2">
+              <span>핵심 D-Day</span>
+            </h3>
+            <button onclick="openDDayModal()" class="text-xs text-emerald-800 font-bold hover:underline flex items-center gap-0.5">
+              <span>일정 관리</span> ›
+            </button>
+          </div>
+          <div id="dday-scroll-box" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
         </div>
 
         <!-- 🌙 수면 리듬 & 잘 자요 카드 -->
@@ -194,19 +206,6 @@
               </button>
             </div>
           </div>
-        </div>
-
-        <!-- 🗓️ 수험 핵심 D-Day 관리 카드 -->
-        <div class="bg-white border-2 border-emerald-100 rounded-2xl p-4 shadow-sm space-y-2.5">
-          <div class="flex justify-between items-center">
-            <h3 class="text-sm font-extrabold text-stone-800 flex items-center gap-2">
-              <span>핵심 D-Day</span>
-            </h3>
-            <button onclick="openDDayModal()" class="text-xs text-emerald-800 font-bold hover:underline flex items-center gap-0.5">
-              <span>일정 관리</span> ›
-            </button>
-          </div>
-          <div id="dday-scroll-box" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
         </div>
 
       </div>
@@ -404,12 +403,9 @@
   <!-- 💌 팝업 1: 수쌤이 전하는 오늘의 명언 팝업 모달 -->
   <div id="teacher-quote-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 border-2 border-emerald-100 text-center">
-      <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-xl shadow-inner border border-amber-200">
-        💬
-      </div>
       <div>
-        <span class="text-[11px] font-extrabold bg-emerald-100 text-emerald-900 px-3 py-1 rounded-full uppercase tracking-wider">
-          수쌤이 전하는 오늘의 명언
+        <span class="text-sm font-extrabold bg-emerald-100 text-emerald-900 px-3 py-1.5 rounded-full uppercase tracking-wider">
+          오늘의 명언
         </span>
       </div>
 
@@ -441,7 +437,6 @@
     <div class="bg-white rounded-3xl max-w-sm sm:max-w-md w-full p-5 shadow-2xl space-y-3.5 border-2 border-emerald-100">
       <div class="flex justify-between items-center border-b border-stone-100 pb-2.5">
         <h3 class="font-extrabold text-stone-800 text-sm flex items-center gap-2">
-          📖
           <span>수쌤의 명언 보관함</span>
         </h3>
         <button onclick="closeQuoteArchiveModal()" class="text-stone-400 hover:text-stone-600 text-sm">
@@ -457,7 +452,6 @@
     <div class="bg-white rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-4 border-2 border-emerald-100">
       <div class="flex justify-between items-center border-b border-stone-100 pb-3">
         <h3 class="font-extrabold text-stone-800 text-sm flex items-center gap-1.5">
-          📅
           <span>수험 D-Day 일정 관리</span>
         </h3>
         <button onclick="closeDDayModal()" class="text-stone-400 hover:text-stone-600 text-sm">
@@ -556,15 +550,15 @@
     let isRunning = false;
     let totalStudySeconds = JSON.parse(localStorage.getItem('go3_total_study_sec')) || 0;
 
-    function applySubject(subj, mins) {
+    function applySubject(subj, mins, btn) {
       currentSubject = subj;
       timerDuration = mins * 60;
       timeRemaining = timerDuration;
-      document.querySelectorAll('.subj-tab-btn').forEach(btn => {
-        btn.classList.remove('bg-[#2E6B5B]', 'text-white', 'shadow-sm');
-        btn.classList.add('bg-stone-100', 'text-stone-600');
+      document.querySelectorAll('.subj-tab-btn').forEach(b => {
+        b.classList.remove('bg-[#2E6B5B]', 'text-white', 'shadow-sm');
+        b.classList.add('bg-stone-100', 'text-stone-600');
       });
-      const activeBtn = document.getElementById('tab-btn-' + subj);
+      const activeBtn = btn || event.currentTarget;
       if (activeBtn) {
         activeBtn.classList.remove('bg-stone-100', 'text-stone-600');
         activeBtn.classList.add('bg-[#2E6B5B]', 'text-white', 'shadow-sm');
@@ -596,10 +590,10 @@
       if (isRunning) {
         clearInterval(timerInterval);
         isRunning = false;
-        btn.innerHTML = '▶️ <span>시작</span>';
+        btn.innerHTML = '<span>시작</span>';
       } else {
         isRunning = true;
-        btn.innerHTML = '⏸️ <span>일시정지</span>';
+        btn.innerHTML = '<span>일시정지</span>';
         timerInterval = setInterval(() => {
           if (timeRemaining > 0) {
             timeRemaining--;
@@ -608,7 +602,7 @@
           } else {
             clearInterval(timerInterval);
             isRunning = false;
-            btn.innerHTML = '▶️ <span>시작</span>';
+            btn.innerHTML = '<span>시작</span>';
             alert(`[${currentSubject}] 시험 시간이 종료되었습니다! OMR 마킹을 확인하세요.`);
           }
           updateClockDisplay();
@@ -619,7 +613,7 @@
     function resetClockTimer() {
       clearInterval(timerInterval);
       isRunning = false;
-      document.getElementById('clock-toggle-btn').innerHTML = '▶️ <span>시작</span>';
+      document.getElementById('clock-toggle-btn').innerHTML = '<span>시작</span>';
       timeRemaining = timerDuration;
       updateClockDisplay();
     }
@@ -644,11 +638,19 @@
       scrollContainer.innerHTML = '';
       let primary = ddayList.find(d => d.isPrimary) || ddayList[0];
 
-      if (primary) {
-        const diff = calcDiffDays(primary.date);
-        document.getElementById('header-dday-title').innerText = primary.title;
-        document.getElementById('header-dday-val').innerText = diff > 0 ? `D-${diff}` : (diff === 0 ? 'D-Day' : `D+${Math.abs(diff)}`);
-      }
+      const headerList = document.getElementById('header-dday-list');
+      const suneungDdays = ddayList.filter(d => d.title.includes('수능'));
+      headerList.innerHTML = (suneungDdays.length > 0 ? suneungDdays : (primary ? [primary] : []))
+        .map(d => {
+          const diff = calcDiffDays(d.date);
+          const diffText = diff > 0 ? `D-${diff}` : (diff === 0 ? 'D-Day' : `D+${Math.abs(diff)}`);
+          return `
+            <span class="bg-[#1C4238] hover:bg-[#17362D] text-emerald-100 font-semibold px-2.5 py-1.5 rounded-full text-[11px] flex items-center gap-1 border border-emerald-600/50 shadow-sm transition">
+              <span>${d.title}</span>
+              <span class="text-amber-300 font-extrabold">${diffText}</span>
+            </span>
+          `;
+        }).join('');
 
       ddayList.forEach(d => {
         const diff = calcDiffDays(d.date);
