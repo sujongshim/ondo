@@ -131,11 +131,11 @@
         <div class="bg-white border-2 border-emerald-100 rounded-3xl p-5 shadow-sm space-y-4">
           <!-- 과목 / 교시 선택 탭 (초록 버튼) -->
           <div class="grid grid-cols-5 gap-1.5 text-xs text-center font-bold">
-            <button onclick="applySubject('뽀모도로', 60, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">집중 1시간</button>
-            <button onclick="applySubject('국어', 80, this)" class="subj-tab-btn p-2 rounded-xl bg-[#2E6B5B] text-white shadow-sm">국어 80분</button>
-            <button onclick="applySubject('수학', 100, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">수학 100분</button>
-            <button onclick="applySubject('영어', 70, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">영어 70분</button>
-            <button onclick="applySubject('영어', 50, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">영어 50분</button>
+            <button onclick="applySubject('뽀모도로', 60, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">집중</span><span class="block">1시간</span></button>
+            <button onclick="applySubject('국어', 80, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">국어</span><span class="block">80분</span></button>
+            <button onclick="applySubject('수학', 100, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">수학</span><span class="block">100분</span></button>
+            <button onclick="applySubject('영어', 70, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">영어</span><span class="block">70분</span></button>
+            <button onclick="applySubject('영어', 50, this)" class="subj-tab-btn p-2 rounded-xl bg-[#2E6B5B] text-white shadow-sm leading-tight"><span class="block">영어</span><span class="block">50분</span></button>
           </div>
 
           <!-- 🔴 빨강 레트로 탁상 전자시계 그래픽 -->
@@ -145,10 +145,10 @@
 
             <div class="retro-clock-inner rounded-2xl py-6 px-4 text-center">
               <span id="clock-status-label" class="text-xs font-bold text-stone-500 uppercase tracking-widest block mb-1">
-                1교시 국어 실전 시험
+                영어 실전 시험 (50분)
               </span>
               <div id="clock-display" class="text-5xl sm:text-6xl font-extrabold tracking-tight text-stone-900 font-mono my-1">
-                80:00
+                50:00
               </div>
               <span class="text-[11px] text-stone-400 font-bold uppercase tracking-widest">MIN · SEC</span>
             </div>
@@ -188,23 +188,27 @@
         <div class="bg-white border-2 border-emerald-100 rounded-2xl p-4 shadow-sm space-y-2.5">
           <div class="flex justify-between items-center">
             <h3 class="text-sm font-extrabold text-stone-800 flex items-center gap-2">
-              <span>규칙적인 수면이 제일 중요하단다💜</span>
+              <span>규칙적인 수면</span>
             </h3>
             <span class="text-[10px] bg-emerald-100 text-emerald-900 font-extrabold px-2 py-0.5 rounded-full">수능형 리듬</span>
           </div>
           <div class="flex items-center justify-between bg-stone-50 p-3 rounded-xl border border-stone-200 text-xs">
-            <div>
-              <span class="text-[11px] text-stone-400 block">어젯밤 수면 기록</span>
+            <div onclick="toggleSleepChart()" class="cursor-pointer">
+              <span class="text-[11px] text-stone-400 block">어젯밤 수면 기록 <span class="text-emerald-700 underline">(그래프 보기)</span></span>
               <span id="home-sleep-stat" class="font-extrabold text-emerald-900 font-mono text-sm">6시간 30분 (23:30~06:00)</span>
             </div>
             <div class="flex gap-2">
               <button onclick="quickSleepAction('sleep')" class="bg-[#2E6B5B] hover:bg-emerald-900 text-white px-3 py-1.5 rounded-xl text-xs font-bold active:scale-95 shadow-sm">
-                🌙 취침
+                취침
               </button>
               <button onclick="quickSleepAction('wake')" class="bg-amber-400 hover:bg-amber-300 text-stone-900 px-3 py-1.5 rounded-xl text-xs font-bold active:scale-95 shadow-sm">
-                ☀️ 기상
+                기상
               </button>
             </div>
+          </div>
+          <div id="sleep-chart-container" class="hidden bg-stone-50 rounded-xl p-3 border border-stone-200">
+            <p class="text-[11px] text-stone-400 mb-1.5 font-semibold">최근 7일 수면 시간</p>
+            <div id="sleep-chart-svg"></div>
           </div>
         </div>
 
@@ -217,7 +221,7 @@
         <div class="bg-white border-2 border-emerald-100 rounded-3xl p-5 shadow-sm space-y-3.5">
           <div class="flex justify-between items-center">
             <h3 class="text-sm font-extrabold text-stone-800 flex items-center gap-2">
-              <span>오늘 플래너 & 실천 달력(루틴 완료 시 수쌤 도장)</span>
+              <span>학습 플랜</span>
             </h3>
             <span id="planner-count-badge" class="text-xs font-extrabold bg-emerald-100 text-emerald-900 px-2.5 py-1 rounded-full">0/3 완료</span>
           </div>
@@ -241,8 +245,7 @@
           <div class="pt-3 border-t border-stone-100">
             <button onclick="togglePlannerCalendar()" class="w-full py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100/80 text-emerald-900 rounded-xl text-xs font-extrabold flex items-center justify-between transition active:scale-98 border border-emerald-200">
               <span class="flex items-center gap-2">
-                🔖
-                <span>실천 달력 열기 (수쌤 도장 확인)</span>
+                <span>실천 달력 열기 (도장 확인)</span>
               </span>
               <span class="flex items-center gap-1.5 text-xs text-emerald-800">
                 <span id="planner-cal-toggle-text">달력 보기</span>
@@ -273,7 +276,7 @@
         <div class="bg-white border-2 border-emerald-100 rounded-3xl p-5 shadow-sm space-y-3.5">
           <div class="flex justify-between items-center">
             <h3 class="text-sm font-extrabold text-stone-800 flex items-center gap-2">
-              <span>고3 갓생 루틴 & 습관 달력 (루틴 완료 시 수쌤 도장)</span>
+              <span>루틴 만들기</span>
             </h3>
             <span id="routine-count-badge" class="text-xs font-extrabold bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full">4개 진행 중</span>
           </div>
@@ -285,8 +288,7 @@
           <div class="pt-3 border-t border-stone-100">
             <button onclick="toggleRoutineCalendar()" class="w-full py-2.5 px-4 bg-amber-50 hover:bg-amber-100/80 text-amber-950 rounded-xl text-xs font-extrabold flex items-center justify-between transition active:scale-98 border border-amber-200">
               <span class="flex items-center gap-2">
-                🔖
-                <span>습관 달력 열기 (수쌤 도장 확인)</span>
+                <span>습관 달력 열기 (도장 확인)</span>
               </span>
               <span class="flex items-center gap-1.5 text-xs text-amber-900">
                 <span id="routine-cal-toggle-text">달력 보기</span>
@@ -390,13 +392,11 @@
       </div>
     </div>
 
-    <!-- 3. Footer (기획 및 제작 : 수쌤) -->
-    <footer class="mt-12 text-center text-xs text-stone-400 pb-8 border-t border-stone-200/80 pt-6 space-y-1">
-      <p class="font-semibold text-stone-600 flex items-center justify-center gap-1.5">
-        <span>기획 및 제작 :</span>
-        <span class="font-extrabold text-emerald-900">수쌤</span>
-      </p>
+    <!-- 3. Footer -->
+    <footer class="mt-12 text-center text-xs text-stone-400 pb-8 border-t border-stone-200/80 pt-6 space-y-1.5">
       <p class="text-[11px] text-stone-400">© 2026 수쌤. All rights reserved.</p>
+      <p class="text-[11px] text-stone-400" id="site-stats" aria-live="polite"></p>
+      <button onclick="downloadAppHtml()" class="text-[11px] text-emerald-700 underline font-semibold">다운로드</button>
     </footer>
   </main>
 
@@ -543,9 +543,9 @@
     }
 
     // --- 2. RETRO CLOCK TIMER (타입 2 결합) ---
-    let currentSubject = '국어';
-    let timerDuration = 80 * 60;
-    let timeRemaining = 80 * 60;
+    let currentSubject = '영어';
+    let timerDuration = 50 * 60;
+    let timeRemaining = 50 * 60;
     let timerInterval = null;
     let isRunning = false;
     let totalStudySeconds = JSON.parse(localStorage.getItem('go3_total_study_sec')) || 0;
@@ -718,12 +718,75 @@
       const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
       if (type === 'sleep') {
         localStorage.setItem('go3_sleep_time_record', timeStr);
-        alert(`🌙 취침 시간(${timeStr})이 기록되었습니다. 푹 자고 아침에 [기상]을 눌러주세요!`);
+        localStorage.setItem('go3_sleep_start_ts', now.toISOString());
+        alert(`취침 시간(${timeStr})이 기록되었습니다. 푹 자고 아침에 [기상]을 눌러주세요!`);
       } else {
         const sleepTime = localStorage.getItem('go3_sleep_time_record') || '23:30';
-        document.getElementById('home-sleep-stat').innerText = `수면 완료 (${sleepTime}~${timeStr})`;
-        alert(`☀️ 기상 시간(${timeStr})이 기록되었습니다! 오늘도 상쾌한 수험 하루 보내세요.`);
+        const startTs = localStorage.getItem('go3_sleep_start_ts');
+        let hours;
+        if (startTs) {
+          hours = (now - new Date(startTs)) / 3600000;
+        } else {
+          const [sh, sm] = sleepTime.split(':').map(Number);
+          let diffMin = (now.getHours() * 60 + now.getMinutes()) - (sh * 60 + sm);
+          if (diffMin < 0) diffMin += 24 * 60;
+          hours = diffMin / 60;
+        }
+        hours = Math.max(0, Math.round(hours * 10) / 10);
+        const h = Math.floor(hours);
+        const m = Math.round((hours - h) * 60);
+        document.getElementById('home-sleep-stat').innerText = `${h}시간 ${m}분 (${sleepTime}~${timeStr})`;
+
+        const log = JSON.parse(localStorage.getItem('go3_sleep_log')) || {};
+        log[new Date().toISOString().slice(0, 10)] = hours;
+        localStorage.setItem('go3_sleep_log', JSON.stringify(log));
+        renderSleepChart();
+
+        alert(`기상 시간(${timeStr})이 기록되었습니다! 오늘도 상쾌한 수험 하루 보내세요.`);
       }
+    }
+
+    function toggleSleepChart() {
+      const container = document.getElementById('sleep-chart-container');
+      if (container.classList.contains('hidden')) {
+        container.classList.remove('hidden');
+        renderSleepChart();
+      } else {
+        container.classList.add('hidden');
+      }
+    }
+
+    function renderSleepChart() {
+      const log = JSON.parse(localStorage.getItem('go3_sleep_log')) || {};
+      const weekdayLabels = ['일', '월', '화', '수', '목', '금', '토'];
+      const days = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().slice(0, 10);
+        days.push({ label: weekdayLabels[d.getDay()], hours: log[key] || 0 });
+      }
+      const maxH = 10, barW = 28, gap = 10, chartH = 100, baseY = 110;
+      const svgW = days.length * (barW + gap);
+      const goalY = baseY - (7 / maxH) * chartH;
+      let bars = '';
+      days.forEach((d, i) => {
+        const x = i * (barW + gap) + gap / 2;
+        const h = Math.min(d.hours / maxH, 1) * chartH;
+        const y = baseY - h;
+        const color = d.hours === 0 ? '#E3DED3' : (d.hours >= 7 ? '#2E6B5B' : '#D9782E');
+        bars += `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="4" fill="${color}"/>`;
+        bars += `<text x="${x + barW / 2}" y="${baseY + 14}" font-size="10" text-anchor="middle" fill="#636B66">${d.label}</text>`;
+        if (d.hours > 0) {
+          bars += `<text x="${x + barW / 2}" y="${y - 4}" font-size="10" font-weight="700" text-anchor="middle" fill="#1F2421">${d.hours}h</text>`;
+        }
+      });
+      document.getElementById('sleep-chart-svg').innerHTML = `
+        <svg viewBox="0 0 ${svgW} 130" width="100%" height="130">
+          <line x1="0" y1="${goalY}" x2="${svgW}" y2="${goalY}" stroke="#D9782E" stroke-width="1" stroke-dasharray="3,3"/>
+          ${bars}
+        </svg>
+      `;
     }
 
     // --- 5. CALENDAR TOGGLE LOGIC ---
@@ -1105,9 +1168,53 @@
       renderBanner();
       renderVocabStats();
       checkAndShowQuotePopup();
+      bumpVisit();
     }
 
     window.onload = initAll;
+
+    // --- 9. SITE STATS (누적 방문 / 다운로드) ---
+    const SB_URL = 'https://wuqodlfpmuallhkbikeq.supabase.co';
+    const SB_KEY = 'sb_publishable_BzzphVVA7kwUDH3Jmu-XWg_ifsvZNYJ';
+    async function sbRpc(fn, params) {
+      const res = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+        method: 'POST',
+        headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify(params || {}),
+      });
+      if (!res.ok) throw new Error('rpc_failed');
+      return res.json();
+    }
+    const fmtCount = n => Number(n || 0).toLocaleString('ko-KR');
+    async function refreshStats() {
+      try {
+        const rows = await sbRpc('ondo_get_counters');
+        const byId = Object.fromEntries(rows.map(r => [r.id, r.count]));
+        document.getElementById('site-stats').textContent = `누적 방문 ${fmtCount(byId.visits)} · 누적 다운로드 ${fmtCount(byId.downloads)}`;
+      } catch (e) {
+        document.getElementById('site-stats').textContent = '';
+      }
+    }
+    async function bumpVisit() {
+      try { await sbRpc('ondo_increment_counter', { counter_id: 'visits' }); } catch (e) {}
+      refreshStats();
+    }
+    async function bumpDownload() {
+      try { await sbRpc('ondo_increment_counter', { counter_id: 'downloads' }); } catch (e) {}
+      refreshStats();
+    }
+    function downloadAppHtml() {
+      const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '온도.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      bumpDownload();
+    }
   </script>
 </body>
 </html>
