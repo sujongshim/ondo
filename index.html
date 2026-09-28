@@ -131,11 +131,11 @@
         <div class="bg-white border-2 border-emerald-100 rounded-3xl p-5 shadow-sm space-y-4">
           <!-- 과목 / 교시 선택 탭 (초록 버튼) -->
           <div class="grid grid-cols-5 gap-1.5 text-xs text-center font-bold">
-            <button onclick="applySubject('뽀모도로', 60, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">집중</span><span class="block">1시간</span></button>
-            <button onclick="applySubject('국어', 80, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">국어</span><span class="block">80분</span></button>
-            <button onclick="applySubject('수학', 100, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">수학</span><span class="block">100분</span></button>
-            <button onclick="applySubject('영어', 70, this)" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">영어</span><span class="block">70분</span></button>
-            <button onclick="applySubject('영어', 50, this)" class="subj-tab-btn p-2 rounded-xl bg-[#2E6B5B] text-white shadow-sm leading-tight"><span class="block">영어</span><span class="block">50분</span></button>
+            <button onclick="applySubject('뽀모도로', 60, this)" data-subj="뽀모도로" data-mins="60" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">집중</span><span class="block">1시간</span></button>
+            <button onclick="applySubject('국어', 80, this)" data-subj="국어" data-mins="80" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">국어</span><span class="block">80분</span></button>
+            <button onclick="applySubject('수학', 100, this)" data-subj="수학" data-mins="100" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">수학</span><span class="block">100분</span></button>
+            <button onclick="applySubject('영어', 70, this)" data-subj="영어" data-mins="70" class="subj-tab-btn p-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 leading-tight"><span class="block">영어</span><span class="block">70분</span></button>
+            <button onclick="applySubject('영어', 50, this)" data-subj="영어" data-mins="50" class="subj-tab-btn p-2 rounded-xl bg-[#2E6B5B] text-white shadow-sm leading-tight"><span class="block">영어</span><span class="block">50분</span></button>
           </div>
 
           <!-- 🔴 빨강 레트로 탁상 전자시계 그래픽 -->
@@ -402,6 +402,7 @@
       <p class="font-semibold text-stone-600">온도 : 학생들을 응원하는 마음으로 만든 작은 앱</p>
       <p class="text-[11px] text-stone-400">© 2026 심수정. All rights reserved.</p>
       <p class="text-[11px] text-stone-400" id="site-stats" aria-live="polite"></p>
+      <button onclick="openSettingsModal()" class="text-[11px] text-emerald-700 underline font-semibold">설정 · 백업</button>
     </footer>
   </main>
 
@@ -473,6 +474,30 @@
         </button>
       </div>
       <div class="space-y-2 max-h-60 overflow-y-auto pr-1" id="modal-dday-list"></div>
+    </div>
+  </div>
+
+  <!-- 팝업 4: 설정 · 백업 모달 -->
+  <div id="settings-modal" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-4 border-2 border-emerald-100">
+      <div class="flex justify-between items-center border-b border-stone-100 pb-3">
+        <h3 class="font-extrabold text-stone-800 text-sm flex items-center gap-1.5">
+          <span>설정 · 백업</span>
+        </h3>
+        <button onclick="closeSettingsModal()" class="text-stone-400 hover:text-stone-600 text-sm">
+          ✕
+        </button>
+      </div>
+      <div class="bg-stone-50 rounded-2xl p-3.5 border border-stone-200 text-xs text-stone-600 leading-relaxed space-y-1.5">
+        <p>모든 기록(플래너, 루틴, 수면, 순공시간, 단어 복습 진도)은 <b class="text-stone-800">이 휴대폰의 이 브라우저 안에만</b> 저장돼요. 서버로 전송되거나 다른 기기와 자동으로 이어지지 않아요.</p>
+        <p><b class="text-stone-800">휴대폰을 바꾸거나</b> 브라우저 데이터(사이트 데이터)를 지우면 기록이 사라져요. 바꾸기 전에 아래 <b class="text-stone-800">백업 파일 받기</b>로 저장해두고, 새 기기에서 <b class="text-stone-800">백업 불러오기</b>로 그대로 이어서 쓸 수 있어요.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="downloadBackup()" class="bg-[#2E6B5B] hover:bg-emerald-900 text-white py-2.5 rounded-xl text-xs font-bold active:scale-98 transition">백업 파일 받기</button>
+        <button onclick="document.getElementById('backup-file-input').click()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 py-2.5 rounded-xl text-xs font-bold active:scale-98 transition">백업 불러오기</button>
+      </div>
+      <input id="backup-file-input" type="file" accept="application/json" class="hidden" onchange="restoreBackup(this.files[0])">
+      <p class="text-[10px] text-stone-400 text-center">백업 불러오기를 하면 지금 이 기기의 기록을 덮어써요.</p>
     </div>
   </div>
 
@@ -710,47 +735,115 @@
       if (chartContainer && !chartContainer.classList.contains('hidden')) renderStudyChart();
     }
 
+    // 초 단위가 아니라 실제 시각(Date.now())으로 종료 시각을 저장/계산하므로,
+    // 화면이 꺼지거나 탭이 백그라운드로 가서 setInterval이 쉬었다가 돌아와도
+    // (또는 페이지를 새로고침/재접속해도) 실제 흐른 시간만큼 정확히 반영된다.
+    function accrueStudySeconds(seconds) {
+      if (seconds <= 0) return;
+      totalStudySeconds += seconds;
+      localStorage.setItem('go3_total_study_sec', totalStudySeconds);
+      const log = JSON.parse(localStorage.getItem('go3_study_log')) || {};
+      const todayKey = todayKSTStr();
+      log[todayKey] = (log[todayKey] || 0) + seconds;
+      localStorage.setItem('go3_study_log', JSON.stringify(log));
+    }
+
+    function saveTimerRunState(lastAccrualTs) {
+      localStorage.setItem('go3_timer_run', JSON.stringify({
+        subject: currentSubject,
+        duration: timerDuration,
+        endTs: Date.now() + timeRemaining * 1000,
+        lastAccrualTs,
+      }));
+    }
+
+    function tickTimer() {
+      const state = JSON.parse(localStorage.getItem('go3_timer_run'));
+      if (!state) { clearInterval(timerInterval); isRunning = false; return; }
+      const now = Date.now();
+      const elapsed = Math.floor((now - state.lastAccrualTs) / 1000);
+      if (elapsed > 0) {
+        accrueStudySeconds(Math.min(elapsed, timeRemaining));
+        timeRemaining = Math.max(0, Math.round((state.endTs - now) / 1000));
+        state.lastAccrualTs = now;
+        localStorage.setItem('go3_timer_run', JSON.stringify(state));
+      }
+      updateClockDisplay();
+      if (timeRemaining <= 0) {
+        clearInterval(timerInterval);
+        isRunning = false;
+        document.getElementById('clock-toggle-btn').innerHTML = '<span>시작</span>';
+        localStorage.removeItem('go3_timer_run');
+        alert(`[${currentSubject}] 시험 시간이 종료되었습니다! OMR 마킹을 확인하세요.`);
+      }
+    }
+
     function toggleClockTimer() {
       const btn = document.getElementById('clock-toggle-btn');
       if (isRunning) {
         clearInterval(timerInterval);
         isRunning = false;
         btn.innerHTML = '<span>시작</span>';
+        localStorage.removeItem('go3_timer_run');
       } else {
         isRunning = true;
         btn.innerHTML = '<span>일시정지</span>';
-        timerInterval = setInterval(() => {
-          if (timeRemaining > 0) {
-            timeRemaining--;
-            totalStudySeconds++;
-            localStorage.setItem('go3_total_study_sec', totalStudySeconds);
-            const log = JSON.parse(localStorage.getItem('go3_study_log')) || {};
-            const todayKey = todayKSTStr();
-            log[todayKey] = (log[todayKey] || 0) + 1;
-            localStorage.setItem('go3_study_log', JSON.stringify(log));
-          } else {
-            clearInterval(timerInterval);
-            isRunning = false;
-            btn.innerHTML = '<span>시작</span>';
-            alert(`[${currentSubject}] 시험 시간이 종료되었습니다! OMR 마킹을 확인하세요.`);
-          }
-          updateClockDisplay();
-        }, 1000);
+        saveTimerRunState(Date.now());
+        timerInterval = setInterval(tickTimer, 1000);
       }
     }
 
     function resetClockTimer() {
       clearInterval(timerInterval);
       isRunning = false;
+      localStorage.removeItem('go3_timer_run');
       document.getElementById('clock-toggle-btn').innerHTML = '<span>시작</span>';
       timeRemaining = timerDuration;
+      updateClockDisplay();
+    }
+
+    function resumeTimerOnLoad() {
+      const state = JSON.parse(localStorage.getItem('go3_timer_run'));
+      if (!state) return;
+      const now = Date.now();
+      const capped = Math.min(Math.floor((now - state.lastAccrualTs) / 1000), Math.max(0, Math.round((state.endTs - state.lastAccrualTs) / 1000)));
+      accrueStudySeconds(capped);
+
+      currentSubject = state.subject;
+      timerDuration = state.duration;
+      const remaining = Math.max(0, Math.round((state.endTs - now) / 1000));
+
+      if (remaining <= 0) {
+        localStorage.removeItem('go3_timer_run');
+        timeRemaining = timerDuration;
+        updateClockDisplay();
+        return;
+      }
+
+      timeRemaining = remaining;
+      isRunning = true;
+      saveTimerRunState(now);
+
+      document.querySelectorAll('.subj-tab-btn').forEach(b => {
+        b.classList.remove('bg-[#2E6B5B]', 'text-white', 'shadow-sm');
+        b.classList.add('bg-stone-100', 'text-stone-600');
+        if (b.dataset.subj === state.subject && Number(b.dataset.mins) * 60 === state.duration) {
+          b.classList.remove('bg-stone-100', 'text-stone-600');
+          b.classList.add('bg-[#2E6B5B]', 'text-white', 'shadow-sm');
+        }
+      });
+      document.getElementById('clock-status-label').innerText = state.subject === '뽀모도로'
+        ? `집중 시간 (${state.duration / 60}분)`
+        : `${state.subject} 실전 시험 (${state.duration / 60}분)`;
+      document.getElementById('clock-toggle-btn').innerHTML = '<span>일시정지</span>';
+      timerInterval = setInterval(tickTimer, 1000);
       updateClockDisplay();
     }
 
     // --- 3. D-DAY LOGIC ---
     let ddayList = JSON.parse(localStorage.getItem('go3_ddays')) || [
       { id: 1, title: '2027 수능', date: '2026-11-19', isPrimary: true },
-      { id: 2, title: '10월 학평', date: '2026-10-14', isPrimary: false },
+      { id: 2, title: '10월 학평', date: '2026-10-20', isPrimary: false },
       { id: 3, title: '수시 발표', date: '2026-12-11', isPrimary: false },
       { id: 4, title: '정시 접수', date: '2027-01-04', isPrimary: false }
     ];
@@ -823,6 +916,46 @@
 
     function openDDayModal() { document.getElementById('dday-modal').classList.remove('hidden'); }
     function closeDDayModal() { document.getElementById('dday-modal').classList.add('hidden'); }
+
+    // --- 설정 · 백업 ---
+    function openSettingsModal() { document.getElementById('settings-modal').classList.remove('hidden'); }
+    function closeSettingsModal() { document.getElementById('settings-modal').classList.add('hidden'); }
+
+    function downloadBackup() {
+      const data = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('go3_')) data[key] = localStorage.getItem(key);
+      }
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `온도_백업_${todayKSTStr()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    }
+
+    function restoreBackup(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          const keys = Object.keys(data).filter(k => k.startsWith('go3_'));
+          if (keys.length === 0) throw new Error('empty');
+          if (!confirm(`백업 파일에서 ${keys.length}개 기록을 불러와 지금 기기의 기록을 덮어씁니다. 계속할까요?`)) return;
+          keys.forEach(k => localStorage.setItem(k, data[k]));
+          alert('백업을 불러왔어요. 새로고침합니다.');
+          location.reload();
+        } catch (e) {
+          alert('백업 파일을 읽을 수 없어요. 온도에서 받은 백업 파일이 맞는지 확인해 주세요.');
+        }
+      };
+      reader.readAsText(file);
+    }
     function addCustomDDay() {
       const title = document.getElementById('new-dday-title').value.trim();
       const date = document.getElementById('new-dday-date').value;
@@ -1330,6 +1463,7 @@
     function initAll() {
       renderDDays();
       updateClockDisplay();
+      resumeTimerOnLoad();
       renderPlanner();
       renderRoutine();
       renderBanner();
@@ -1339,6 +1473,9 @@
     }
 
     window.onload = initAll;
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && isRunning) tickTimer();
+    });
 
     // --- 9. SITE STATS (누적 방문) ---
     const SB_URL = 'https://wuqodlfpmuallhkbikeq.supabase.co';
