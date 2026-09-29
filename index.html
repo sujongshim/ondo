@@ -1235,25 +1235,35 @@
 
     // 귀여운 새싹이 캐릭터 — 학습 플랜 실천율에 따라 표정이 바뀐다.
     function mascotSvg(mood) {
-      const body = '#8FC0B0', bodyLine = '#2E6B5B', cheek = '#F1DFC9';
-      const faces = {
-        empty: `<path d="M26 46 q6 6 12 0" fill="none" stroke="${bodyLine}" stroke-width="3" stroke-linecap="round"/><path d="M42 46 q6 6 12 0" fill="none" stroke="${bodyLine}" stroke-width="3" stroke-linecap="round"/><path d="M33 60 q7 -4 14 0" fill="none" stroke="${bodyLine}" stroke-width="3" stroke-linecap="round"/>`,
-        low: `<circle cx="32" cy="46" r="3.2" fill="${bodyLine}"/><circle cx="48" cy="46" r="3.2" fill="${bodyLine}"/><path d="M33 60 q7 3 14 0" fill="none" stroke="${bodyLine}" stroke-width="3" stroke-linecap="round"/>`,
-        mid: `<circle cx="32" cy="45" r="3.4" fill="${bodyLine}"/><circle cx="48" cy="45" r="3.4" fill="${bodyLine}"/><ellipse cx="24" cy="54" rx="4" ry="2.5" fill="${cheek}"/><ellipse cx="56" cy="54" rx="4" ry="2.5" fill="${cheek}"/><path d="M30 58 q10 8 20 0" fill="none" stroke="${bodyLine}" stroke-width="3" stroke-linecap="round"/>`,
-        full: `<path d="M27 44 q5 -6 10 0" fill="none" stroke="${bodyLine}" stroke-width="3" stroke-linecap="round"/><path d="M43 44 q5 -6 10 0" fill="none" stroke="${bodyLine}" stroke-width="3" stroke-linecap="round"/><ellipse cx="24" cy="54" rx="4.5" ry="3" fill="${cheek}"/><ellipse cx="56" cy="54" rx="4.5" ry="3" fill="${cheek}"/><path d="M28 56 q12 12 24 0" fill="none" stroke="${bodyLine}" stroke-width="3" stroke-linecap="round"/>`,
+      const body = '#8FC0B0', bodyLine = '#2E6B5B', cheek = '#F2A488', heart = '#F0876B';
+      const eyes = {
+        empty: `<path d="M25 46 q6 6 12 0" fill="none" stroke="${bodyLine}" stroke-width="3.2" stroke-linecap="round"/><path d="M43 46 q6 6 12 0" fill="none" stroke="${bodyLine}" stroke-width="3.2" stroke-linecap="round"/>`,
+        low: `<circle cx="31" cy="45" r="4.6" fill="${bodyLine}"/><circle cx="29" cy="43" r="1.4" fill="#fff"/><circle cx="49" cy="45" r="4.6" fill="${bodyLine}"/><circle cx="47" cy="43" r="1.4" fill="#fff"/>`,
+        mid: `<circle cx="31" cy="44" r="5.6" fill="${bodyLine}"/><circle cx="29" cy="42" r="1.6" fill="#fff"/><circle cx="49" cy="44" r="5.6" fill="${bodyLine}"/><circle cx="47" cy="42" r="1.6" fill="#fff"/>`,
+        full: `<circle cx="31" cy="44" r="6.4" fill="${bodyLine}"/><circle cx="29" cy="42" r="1.8" fill="#fff"/><circle cx="49" cy="44" r="6.4" fill="${bodyLine}"/><circle cx="47" cy="42" r="1.8" fill="#fff"/>`,
+      };
+      const blush = mood === 'empty' ? '' : `<ellipse cx="23" cy="53" rx="5.2" ry="3.2" fill="${cheek}" opacity="0.85"/><ellipse cx="57" cy="53" rx="5.2" ry="3.2" fill="${cheek}" opacity="0.85"/>`;
+      const mouths = {
+        empty: `<path d="M36 60 q4 -3 8 0" fill="none" stroke="${bodyLine}" stroke-width="2.6" stroke-linecap="round"/>`,
+        low: `<path d="M33 59 q7 4 14 0" fill="none" stroke="${bodyLine}" stroke-width="2.8" stroke-linecap="round"/>`,
+        mid: `<path d="M30 58 q10 8 20 0" fill="none" stroke="${bodyLine}" stroke-width="2.8" stroke-linecap="round"/>`,
+        full: `<path d="M28 57 q12 12 24 0" fill="none" stroke="${bodyLine}" stroke-width="2.8" stroke-linecap="round"/>`,
       };
       const arms = mood === 'full'
-        ? `<path d="M14 58 Q6 48 12 40" fill="none" stroke="${bodyLine}" stroke-width="4" stroke-linecap="round"/><path d="M66 58 Q74 48 68 40" fill="none" stroke="${bodyLine}" stroke-width="4" stroke-linecap="round"/>`
+        ? `<path d="M14 58 Q4 46 10 36" fill="none" stroke="${bodyLine}" stroke-width="4.2" stroke-linecap="round"/><path d="M66 58 Q76 46 70 36" fill="none" stroke="${bodyLine}" stroke-width="4.2" stroke-linecap="round"/>`
         : `<path d="M14 58 Q10 62 16 64" fill="none" stroke="${bodyLine}" stroke-width="4" stroke-linecap="round"/><path d="M66 58 Q70 62 64 64" fill="none" stroke="${bodyLine}" stroke-width="4" stroke-linecap="round"/>`;
-      const sparkle = mood === 'full' ? `<text x="10" y="20" font-size="14">✨</text><text x="58" y="18" font-size="12">✨</text>` : '';
-      const zzz = mood === 'empty' ? `<text x="54" y="18" font-size="13" fill="${bodyLine}" font-weight="700">Z z</text>` : '';
+      const sparkle = mood === 'full' ? `<text x="8" y="18" font-size="13">✨</text><text x="60" y="16" font-size="12">✨</text>` : '';
+      const zzz = mood === 'empty' ? `<text x="56" y="18" font-size="13" fill="${bodyLine}" font-weight="700">z z</text>` : '';
       return `
         <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
           ${sparkle}${zzz}
           ${arms}
           <ellipse cx="40" cy="52" rx="26" ry="24" fill="${body}" stroke="${bodyLine}" stroke-width="3"/>
-          <path d="M40 28 Q34 14 42 8 Q46 18 40 28 Z" fill="#5FA090" stroke="${bodyLine}" stroke-width="2.5" stroke-linejoin="round"/>
-          ${faces[mood]}
+          <path d="M40 30 Q35.5 22 40.5 18.5 Q43.5 23.5 40 30 Z" fill="#5FA090" stroke="${bodyLine}" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M40 69 l-3.6 -3.6 a2.6 2.6 0 0 1 3.6 -3.6 a2.6 2.6 0 0 1 3.6 3.6 Z" fill="${heart}"/>
+          ${eyes[mood]}
+          ${blush}
+          ${mouths[mood]}
         </svg>
       `;
     }
