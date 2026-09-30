@@ -438,7 +438,8 @@
 
     <!-- 📲 앱 설치 안내 배너 (설치 가능할 때만 표시) -->
     <div id="install-banner" class="hidden space-y-1.5">
-      <button onclick="installApp()" class="w-full bg-[#2E6B5B] hover:bg-emerald-900 text-white py-3 rounded-2xl text-xs font-extrabold active:scale-95 shadow-md transition">홈 화면에 추가하기</button>
+      <p id="install-ios-hint" class="hidden text-center text-xs text-stone-600 bg-stone-50 border border-stone-200 rounded-2xl py-3 px-4 leading-relaxed">Safari 하단 <b>공유 버튼(<span class="inline-block">⬆️</span>)</b> → <b>홈 화면에 추가</b>를 눌러주세요.</p>
+      <button id="install-action-btn" onclick="installApp()" class="w-full bg-[#2E6B5B] hover:bg-emerald-900 text-white py-3 rounded-2xl text-xs font-extrabold active:scale-95 shadow-md transition">홈 화면에 추가하기</button>
       <button onclick="dismissInstallBanner()" class="w-full text-stone-400 hover:text-stone-600 text-[11px] font-medium">나중에 하기</button>
     </div>
   </main>
@@ -1648,6 +1649,7 @@
       renderVocabStats();
       checkAndShowQuotePopup();
       bumpVisit();
+      initInstallBanner();
     }
 
     window.onload = initAll;
@@ -1656,12 +1658,33 @@
     });
 
     // --- 10. PWA 설치 안내 배너 ---
+    // iOS Safari는 beforeinstallprompt 이벤트 자체가 없어서(영원히 안 뜸),
+    // iOS는 감지해서 바로 "공유 버튼으로 추가하세요" 안내를 보여준다.
     let deferredInstallPrompt = null;
+    function isStandaloneNow() {
+      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+    function isIOSDevice() {
+      const ua = navigator.userAgent;
+      const iOSUA = /iPad|iPhone|iPod/.test(ua);
+      const iPadOSAsMac = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+      return iOSUA || iPadOSAsMac;
+    }
+    function initInstallBanner() {
+      if (isStandaloneNow() || localStorage.getItem('go3_install_dismissed') === 'true') return;
+      if (isIOSDevice()) {
+        document.getElementById('install-ios-hint').classList.remove('hidden');
+        document.getElementById('install-action-btn').classList.add('hidden');
+        document.getElementById('install-banner').classList.remove('hidden');
+      }
+      // 그 외 브라우저는 beforeinstallprompt가 실제로 발생할 때만 아래에서 보여준다.
+    }
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredInstallPrompt = e;
-      const alreadyInstalled = window.matchMedia('(display-mode: standalone)').matches;
-      if (!alreadyInstalled && localStorage.getItem('go3_install_dismissed') !== 'true') {
+      if (!isStandaloneNow() && localStorage.getItem('go3_install_dismissed') !== 'true') {
+        document.getElementById('install-ios-hint').classList.add('hidden');
+        document.getElementById('install-action-btn').classList.remove('hidden');
         document.getElementById('install-banner').classList.remove('hidden');
       }
     });
