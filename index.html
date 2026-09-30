@@ -14,11 +14,12 @@
   <meta name="theme-color" content="#2E6B5B">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232E6B5B'/><text x='50' y='68' font-size='58' text-anchor='middle'>%F0%9F%8C%A1%EF%B8%8F</text></svg>">
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232E6B5B'/><text x='50' y='68' font-size='58' text-anchor='middle'>%F0%9F%8C%A1%EF%B8%8F</text></svg>">
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%EC%98%A8%EB%8F%84%20(ON%3ADO)%22%2C%22short_name%22%3A%22%EC%98%A8%EB%8F%84%22%2C%22description%22%3A%22%EA%B3%A03%EB%B2%A0%20%EC%88%98%ED%97%98%EC%83%9D%20%EC%9E%90%EA%B8%B0%EC%A3%BC%EB%8F%84%20%EC%9B%B9%EC%95%B1%22%2C%22start_url%22%3A%22.%22%2C%22scope%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F6F3EC%22%2C%22theme_color%22%3A%22%232E6B5B%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20100%20100'%3E%3Crect%20width%3D'100'%20height%3D'100'%20rx%3D'22'%20fill%3D'%25232E6B5B'%2F%3E%3Ctext%20x%3D'50'%20y%3D'68'%20font-size%3D'58'%20text-anchor%3D'middle'%3E%25F0%259F%258C%25A1%25EF%25B8%258F%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%22%7D%5D%7D">
 
   <!-- 소확앱 팔레트 + 깔끔한 단일 서체: Noto Sans KR -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS & FontAwesome CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -38,7 +39,7 @@
     }
   </script>
   <style>
-    body { font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; font-weight: 500; font-size: 15.5px; line-height: 1.55; letter-spacing: 0; -webkit-font-smoothing: antialiased; }
+    body { font-family: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; font-weight: 500; font-size: 15.5px; line-height: 1.55; letter-spacing: 0; -webkit-font-smoothing: antialiased; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
@@ -91,6 +92,9 @@
       </div>
       
       <div class="flex items-center gap-2 shrink-0">
+        <button id="invite-btn" onclick="inviteFriend()" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-extrabold px-3.5 py-1.5 rounded-full text-xs border border-emerald-200 shadow-sm transition active:scale-95 shrink-0 whitespace-nowrap">
+          친구초대
+        </button>
         <!-- 🟡 노랑 명언함 버튼 -->
         <button onclick="openQuoteArchiveModal()" class="bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold px-3.5 py-1.5 rounded-full text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 shrink-0 whitespace-nowrap">
           <span>명언함</span>
@@ -103,7 +107,15 @@
 
   <!-- 2. Main Responsive Container (PC: max-w-6xl 2열 그리드, Mobile: 1열 반응형) -->
   <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-5">
-    
+
+    <!-- 📲 앱 설치 안내 배너 (설치 가능할 때만 표시) -->
+    <div id="install-banner" class="hidden bg-sky-50 border border-sky-200 rounded-2xl p-4 space-y-2.5 relative">
+      <button onclick="dismissInstallBanner()" class="absolute top-3 right-3 text-sky-400 hover:text-sky-600 text-xs">✕</button>
+      <p class="text-sm font-extrabold text-sky-900 pr-6">📲 앱으로 설치하면 더 편해요</p>
+      <p class="text-xs text-sky-700 leading-relaxed">바탕화면에 아이콘이 생기고, 앱처럼 전체 화면으로 열려요.</p>
+      <button onclick="installApp()" class="w-full bg-sky-900 hover:bg-sky-950 text-white py-3 rounded-xl text-sm font-extrabold active:scale-98 transition">앱 설치하기</button>
+    </div>
+
     <!-- 💌 오늘의 명언 배너 -->
     <div class="bg-white border-2 border-emerald-100 rounded-2xl p-4 shadow-sm space-y-2.5">
       <div class="flex items-center justify-between gap-2">
@@ -307,6 +319,12 @@
             <span id="routine-count-badge" class="text-xs font-extrabold bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full">4개 진행 중</span>
           </div>
 
+          <!-- 루틴 추가 폼 -->
+          <div class="flex gap-2">
+            <input id="routine-input" type="text" placeholder="매일 반복할 루틴 입력..." class="flex-1 min-w-0 text-xs border border-stone-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+            <button onclick="addRoutineItem()" class="shrink-0 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-xl text-xs font-extrabold shadow-sm transition">추가</button>
+          </div>
+
           <!-- 루틴 체크리스트 -->
           <div id="routine-check-list" class="space-y-2 text-xs"></div>
 
@@ -423,10 +441,7 @@
       <p class="font-semibold text-stone-600">온도 : 학생들을 응원하는 마음으로 만든 작은 앱</p>
       <p class="text-[11px] text-stone-400">© 2026 심수정. All rights reserved.</p>
       <p class="text-[11px] text-stone-400" id="site-stats" aria-live="polite"></p>
-      <p class="flex items-center justify-center gap-3">
-        <button id="invite-btn" onclick="inviteFriend()" class="text-[11px] text-emerald-700 underline font-semibold">친구에게 초대하기</button>
-        <button onclick="openSettingsModal()" class="text-[11px] text-emerald-700 underline font-semibold">설정 · 백업</button>
-      </p>
+      <button onclick="openSettingsModal()" class="text-[11px] text-emerald-700 underline font-semibold">설정 · 백업</button>
     </footer>
   </main>
 
@@ -1384,7 +1399,8 @@
         item.className = `flex items-center gap-2.5 p-2.5 rounded-xl border ${r.completed ? 'bg-amber-50/60 border-amber-200' : 'bg-stone-50 border-stone-200'}`;
         item.innerHTML = `
           <input type="checkbox" ${r.completed ? 'checked' : ''} onchange="toggleRoutineItem(${r.id})" class="rounded text-amber-600 focus:ring-0 w-4 h-4 cursor-pointer">
-          <span class="font-medium ${r.completed ? 'line-through text-stone-400' : 'text-stone-800'}">${r.text}</span>
+          <span class="flex-1 font-medium ${r.completed ? 'line-through text-stone-400' : 'text-stone-800'}">${r.text}</span>
+          <button onclick="deleteRoutineItem(${r.id})" class="text-stone-300 hover:text-red-500 text-xs px-1">🗑️</button>
         `;
         list.appendChild(item);
       });
@@ -1404,6 +1420,22 @@
 
     function toggleRoutineItem(id) {
       routineItems = routineItems.map(r => r.id === id ? { ...r, completed: !r.completed } : r);
+      localStorage.setItem('go3_routines', JSON.stringify(routineItems));
+      renderRoutine();
+    }
+
+    function addRoutineItem() {
+      const input = document.getElementById('routine-input');
+      const text = input.value.trim();
+      if (!text) return;
+      routineItems.push({ id: Date.now(), text, completed: false });
+      localStorage.setItem('go3_routines', JSON.stringify(routineItems));
+      input.value = '';
+      renderRoutine();
+    }
+
+    function deleteRoutineItem(id) {
+      routineItems = routineItems.filter(r => r.id !== id);
       localStorage.setItem('go3_routines', JSON.stringify(routineItems));
       renderRoutine();
     }
@@ -1623,6 +1655,32 @@
     window.onload = initAll;
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && isRunning) tickTimer();
+    });
+
+    // --- 10. PWA 설치 안내 배너 ---
+    let deferredInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const alreadyInstalled = window.matchMedia('(display-mode: standalone)').matches;
+      if (!alreadyInstalled && localStorage.getItem('go3_install_dismissed') !== 'true') {
+        document.getElementById('install-banner').classList.remove('hidden');
+      }
+    });
+    function installApp() {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.finally(() => {
+        deferredInstallPrompt = null;
+        document.getElementById('install-banner').classList.add('hidden');
+      });
+    }
+    function dismissInstallBanner() {
+      localStorage.setItem('go3_install_dismissed', 'true');
+      document.getElementById('install-banner').classList.add('hidden');
+    }
+    window.addEventListener('appinstalled', () => {
+      document.getElementById('install-banner').classList.add('hidden');
     });
 
     // --- 9. SITE STATS (누적 방문) ---
