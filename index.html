@@ -32,7 +32,7 @@
             amber: { 50:'#FFF6EA', 100:'#FBE7D0', 200:'#F1DFC9', 300:'#E6C29B', 400:'#E39A5C', 500:'#D9782E', 600:'#C2661F', 700:'#A04F17', 800:'#7D3D14', 900:'#5C2D10', 950:'#3A1C09' },
             stone: { 50:'#F6F3EC', 100:'#EFEBDF', 200:'#E3DED3', 300:'#C9C4B7', 400:'#9A9C95', 500:'#636B66', 600:'#4E554F', 700:'#3B4139', 800:'#2A2F29', 900:'#1F2421', 950:'#141714' },
             red: { 50:'#FDECEA', 100:'#FBD9D5', 200:'#F5B3AB', 300:'#ED8B7F', 400:'#E35F4E', 500:'#D93A2B', 600:'#B92E21', 700:'#96241A', 800:'#741C14', 900:'#56150F', 950:'#380D09' },
-            violet: { 50:'#F5F0FB', 100:'#EDE4F7', 200:'#DCC9EF', 300:'#C3A3E0', 400:'#A377CB', 500:'#8557B3', 600:'#6B3FA0', 700:'#563184', 800:'#452869', 900:'#37204F', 950:'#241536' }
+            violet: { 50:'#FEF2F2', 100:'#FEE2E2', 200:'#FECACA', 300:'#FCA5A5', 400:'#F87171', 500:'#EF4444', 600:'#DC2626', 700:'#B91C1C', 800:'#991B1B', 900:'#7F1D1D', 950:'#450A0A' }
           }
         }
       }
@@ -92,9 +92,6 @@
       </div>
       
       <div class="flex items-center gap-2 shrink-0">
-        <button id="invite-btn" onclick="inviteFriend()" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-extrabold px-3.5 py-1.5 rounded-full text-xs border border-emerald-200 shadow-sm transition active:scale-95 shrink-0 whitespace-nowrap">
-          친구초대
-        </button>
         <!-- 🟡 노랑 명언함 버튼 -->
         <button onclick="openQuoteArchiveModal()" class="bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold px-3.5 py-1.5 rounded-full text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 shrink-0 whitespace-nowrap">
           <span>명언함</span>
@@ -108,12 +105,15 @@
   <!-- 2. Main Responsive Container (PC: max-w-6xl 2열 그리드, Mobile: 1열 반응형) -->
   <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-5">
 
+    <button id="invite-btn" onclick="inviteFriend()" class="block ml-auto text-[11px] text-emerald-700 underline font-semibold -mb-1">친구초대</button>
+
     <!-- 📲 앱 설치 안내 배너 (설치 가능할 때만 표시) -->
-    <div id="install-banner" class="hidden bg-sky-50 border border-sky-200 rounded-2xl p-4 space-y-2.5 relative">
-      <button onclick="dismissInstallBanner()" class="absolute top-3 right-3 text-sky-400 hover:text-sky-600 text-xs">✕</button>
-      <p class="text-sm font-extrabold text-sky-900 pr-6">📲 앱으로 설치하면 더 편해요</p>
-      <p class="text-xs text-sky-700 leading-relaxed">바탕화면에 아이콘이 생기고, 앱처럼 전체 화면으로 열려요.</p>
-      <button onclick="installApp()" class="w-full bg-sky-900 hover:bg-sky-950 text-white py-3 rounded-xl text-sm font-extrabold active:scale-98 transition">앱 설치하기</button>
+    <div id="install-banner" class="hidden bg-sky-50 border border-sky-200 rounded-xl px-3.5 py-2 flex items-center justify-between gap-2">
+      <span class="text-xs text-sky-800">📲 홈 화면에 추가하기</span>
+      <div class="flex items-center gap-2 shrink-0">
+        <button onclick="installApp()" class="bg-sky-900 hover:bg-sky-950 text-white px-3 py-1.5 rounded-lg text-xs font-bold active:scale-95 transition">설치</button>
+        <button onclick="dismissInstallBanner()" class="text-sky-400 hover:text-sky-600 text-xs px-1">✕</button>
+      </div>
     </div>
 
     <!-- 💌 오늘의 명언 배너 -->
@@ -387,7 +387,7 @@
         </div>
       </div>
 
-      <button id="vocab-start-btn" onclick="startVocabSession()" class="w-full bg-violet-700 hover:bg-violet-800 text-white py-3 rounded-2xl text-sm font-extrabold active:scale-98 shadow-md transition">
+      <button id="vocab-start-btn" onclick="startVocabSession()" class="w-full bg-violet-700/85 hover:bg-violet-800 text-white py-3 rounded-2xl text-sm font-extrabold active:scale-98 shadow-md transition">
         오늘 단어 복습 시작
       </button>
 
