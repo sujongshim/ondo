@@ -283,13 +283,14 @@
             <!-- 펼쳐지는 달력 (PC/모바일 반응형 그리드) -->
             <div id="planner-cal-container" class="hidden mt-3 bg-stone-50 p-4 rounded-2xl border border-stone-200 space-y-2.5">
               <div class="flex justify-between items-center text-xs font-bold text-stone-700">
-                <span class="flex items-center gap-2">
-                  <span>9월 학습 달력</span>
-                  <span class="text-[11px] text-red-500 font-semibold flex items-center gap-1">
-                    ※ 미션 완료 시 <span class="su-stamp px-1 py-0.5 text-[8px]">쌤</span> 도장
-                  </span>
+                <span class="flex items-center gap-1.5">
+                  <button onclick="changePlannerMonth(-1)" class="text-stone-400 hover:text-stone-700 px-1 font-extrabold" aria-label="이전 달">‹</button>
+                  <span id="planner-cal-month-label">학습 달력</span>
+                  <button onclick="changePlannerMonth(1)" class="text-stone-400 hover:text-stone-700 px-1 font-extrabold" aria-label="다음 달">›</button>
                 </span>
-                <span class="text-emerald-800 font-extrabold" id="planner-month-stat">완료율 85%</span>
+                <span class="text-[11px] text-red-500 font-semibold flex items-center gap-1 shrink-0">
+                  ※ 완료 시 <span class="su-stamp px-1 py-0.5 text-[8px]">쌤</span> 도장
+                </span>
               </div>
               <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-stone-400 mb-1">
                 <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
@@ -332,13 +333,14 @@
             <!-- 펼쳐지는 습관 달력 -->
             <div id="routine-cal-container" class="hidden mt-3 bg-stone-50 p-4 rounded-2xl border border-stone-200 space-y-2.5">
               <div class="flex justify-between items-center text-xs font-bold text-stone-700">
-                <span class="flex items-center gap-2">
-                  <span>9월 습관 달력</span>
-                  <span class="text-[11px] text-red-500 font-semibold flex items-center gap-1">
-                    ※ 루틴 완료 시 <span class="su-stamp px-1 py-0.5 text-[8px]">쌤</span> 도장
-                  </span>
+                <span class="flex items-center gap-1.5">
+                  <button onclick="changeRoutineMonth(-1)" class="text-stone-400 hover:text-stone-700 px-1 font-extrabold" aria-label="이전 달">‹</button>
+                  <span id="routine-cal-month-label">습관 달력</span>
+                  <button onclick="changeRoutineMonth(1)" class="text-stone-400 hover:text-stone-700 px-1 font-extrabold" aria-label="다음 달">›</button>
                 </span>
-                <span class="text-amber-800 font-extrabold" id="routine-month-stat">연속 7일 달성 중</span>
+                <span class="text-[11px] text-red-500 font-semibold flex items-center gap-1 shrink-0">
+                  ※ 완료 시 <span class="su-stamp px-1 py-0.5 text-[8px]">쌤</span> 도장
+                </span>
               </div>
               <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-stone-400 mb-1">
                 <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
@@ -736,7 +738,10 @@
     let timerInterval = null;
     let isRunning = false;
     let isUnlimited = false;
-    let totalStudySeconds = JSON.parse(localStorage.getItem('go3_total_study_sec')) || 0;
+    function getTodayStudySeconds() {
+      const log = JSON.parse(localStorage.getItem('go3_study_log')) || {};
+      return log[todayKSTStr()] || 0;
+    }
 
     function statusLabelFor(subj, mins, unlimited) {
       if (unlimited) return '몰입 타이머 (제한 없음)';
@@ -776,7 +781,7 @@
 
     function updateClockDisplay() {
       document.getElementById('clock-display').innerText = formatMinSec(timeRemaining);
-      document.getElementById('today-total-time').innerText = formatHourMinSec(totalStudySeconds);
+      document.getElementById('today-total-time').innerText = formatHourMinSec(getTodayStudySeconds());
       const chartContainer = document.getElementById('study-chart-container');
       if (chartContainer && !chartContainer.classList.contains('hidden')) renderStudyChart();
     }
@@ -786,8 +791,6 @@
     // (또는 페이지를 새로고침/재접속해도) 실제 흐른 시간만큼 정확히 반영된다.
     function accrueStudySeconds(seconds) {
       if (seconds <= 0) return;
-      totalStudySeconds += seconds;
-      localStorage.setItem('go3_total_study_sec', totalStudySeconds);
       const log = JSON.parse(localStorage.getItem('go3_study_log')) || {};
       const todayKey = todayKSTStr();
       log[todayKey] = (log[todayKey] || 0) + seconds;
@@ -1206,11 +1209,42 @@
     }
 
     // --- 5. CALENDAR TOGGLE LOGIC ---
+    function currentKSTYearMonth() {
+      const k = nowKST();
+      return { y: k.getUTCFullYear(), m: k.getUTCMonth() };
+    }
+    let plannerCalView = currentKSTYearMonth();
+    let routineCalView = currentKSTYearMonth();
+
+    function changePlannerMonth(delta) {
+      let { y, m } = plannerCalView;
+      m += delta;
+      if (m < 0) { m = 11; y--; }
+      if (m > 11) { m = 0; y++; }
+      const cur = currentKSTYearMonth();
+      if (y > cur.y || (y === cur.y && m > cur.m)) return;
+      plannerCalView = { y, m };
+      renderPlannerCalendar();
+    }
+
+    function changeRoutineMonth(delta) {
+      let { y, m } = routineCalView;
+      m += delta;
+      if (m < 0) { m = 11; y--; }
+      if (m > 11) { m = 0; y++; }
+      const cur = currentKSTYearMonth();
+      if (y > cur.y || (y === cur.y && m > cur.m)) return;
+      routineCalView = { y, m };
+      renderRoutineCalendar();
+    }
+
     function togglePlannerCalendar() {
       const container = document.getElementById('planner-cal-container');
       const text = document.getElementById('planner-cal-toggle-text');
       const chevron = document.getElementById('planner-cal-chevron');
       if (container.classList.contains('hidden')) {
+        plannerCalView = currentKSTYearMonth();
+        renderPlannerCalendar();
         container.classList.remove('hidden');
         text.innerText = '달력 닫기';
         chevron.style.transform = 'rotate(180deg)';
@@ -1226,6 +1260,8 @@
       const text = document.getElementById('routine-cal-toggle-text');
       const chevron = document.getElementById('routine-cal-chevron');
       if (container.classList.contains('hidden')) {
+        routineCalView = currentKSTYearMonth();
+        renderRoutineCalendar();
         container.classList.remove('hidden');
         text.innerText = '달력 닫기';
         chevron.style.transform = 'rotate(180deg)';
@@ -1355,12 +1391,17 @@
 
     function renderPlannerCalendar() {
       const grid = document.getElementById('planner-calendar-grid');
+      const label = document.getElementById('planner-cal-month-label');
+      const { y, m } = plannerCalView;
+      if (label) label.innerText = (y === currentKSTYearMonth().y ? '' : `${y}년 `) + `${m + 1}월 학습 달력`;
       grid.innerHTML = '';
-      for (let i = 0; i < 2; i++) {
+      const firstWeekday = new Date(Date.UTC(y, m, 1)).getUTCDay();
+      const daysInMonth = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+      for (let i = 0; i < firstWeekday; i++) {
         grid.innerHTML += '<span></span>';
       }
-      for (let day = 1; day <= 30; day++) {
-        const dayStr = `2026-09-${String(day).padStart(2,'0')}`;
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayStr = `${y}-${String(m + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
         const hasCircle = plannerCalendarStamp[dayStr];
         const isToday = (dayStr === todayKSTStr());
 
@@ -1442,12 +1483,17 @@
 
     function renderRoutineCalendar() {
       const grid = document.getElementById('routine-calendar-grid');
+      const label = document.getElementById('routine-cal-month-label');
+      const { y, m } = routineCalView;
+      if (label) label.innerText = (y === currentKSTYearMonth().y ? '' : `${y}년 `) + `${m + 1}월 습관 달력`;
       grid.innerHTML = '';
-      for (let i = 0; i < 2; i++) {
+      const firstWeekday = new Date(Date.UTC(y, m, 1)).getUTCDay();
+      const daysInMonth = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+      for (let i = 0; i < firstWeekday; i++) {
         grid.innerHTML += '<span></span>';
       }
-      for (let day = 1; day <= 30; day++) {
-        const dayStr = `2026-09-${String(day).padStart(2,'0')}`;
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayStr = `${y}-${String(m + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
         const hasCircle = routineCalendarStamp[dayStr];
         const isToday = (dayStr === todayKSTStr());
 
