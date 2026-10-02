@@ -79,26 +79,28 @@
 
   <!-- 1. Header (🌲 초록 + 🟡 노랑 포인트) -->
   <header class="bg-[#2E6B5B] text-white px-4 sm:px-8 py-3.5 shadow-md sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-y-1.5">
       <div class="flex items-center gap-2.5">
         🌡️
         <div>
-          <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-white flex items-center gap-2">
+          <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-white flex items-center gap-2 whitespace-nowrap">
             <span>온도</span>
             <span class="text-xs bg-amber-400 text-stone-900 font-bold px-2 py-0.5 rounded-full">ON:DO</span>
           </h1>
-          <p class="text-[10px] text-emerald-200 leading-tight">몰입(ON) + 실천(DO) + 열정의 온도(溫度) + 교사의 온도(溫度)</p>
+          <p class="hidden sm:block text-[10px] text-emerald-200 leading-tight">몰입(ON) + 실천(DO) + 열정의 온도(溫度) + 교사의 온도(溫度)</p>
         </div>
       </div>
       
-      <div class="flex items-center gap-2 shrink-0">
+      <div class="flex items-center gap-1.5 shrink-0">
         <!-- 🟡 노랑 명언함 버튼 -->
-        <button onclick="openQuoteArchiveModal()" class="bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold px-3.5 py-1.5 rounded-full text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 shrink-0 whitespace-nowrap">
+        <button onclick="openManual()" class="bg-white/15 hover:bg-white/25 text-white font-bold px-2.5 py-1.5 rounded-full text-[11px] shadow-sm transition active:scale-95 shrink-0 whitespace-nowrap">사용설명서</button>
+        <button onclick="openQuoteArchiveModal()" class="bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold px-2.5 py-1.5 rounded-full text-[11px] flex items-center gap-1.5 shadow-sm transition active:scale-95 shrink-0 whitespace-nowrap">
           <span>명언함</span>
         </button>
         <!-- D-Day 목록 (수능만 표시) -->
         <div id="header-dday-list" onclick="openDDayModal()" class="flex items-center gap-1.5 cursor-pointer shrink-0 whitespace-nowrap"></div>
       </div>
+      <p class="w-full sm:hidden text-[10px] text-emerald-200 leading-tight">몰입(ON) + 실천(DO) + 열정의 온도(溫度) + 교사의 온도(溫度)</p>
     </div>
   </header>
 
@@ -542,8 +544,165 @@
     </div>
   </div>
 
+  <!-- 📖 사용설명서 (전체 화면) -->
+  <div id="manual-view" class="hidden fixed inset-0 z-40 overflow-y-auto bg-[#F6F3EC]">
+    <div class="sticky top-0 z-10 bg-[#2E6B5B] text-white px-4 py-3 shadow-md flex items-center justify-between">
+      <span class="font-extrabold text-base">온도 <span class="text-xs bg-amber-400 text-stone-900 font-bold px-2 py-0.5 rounded-full ml-1">사용설명서</span></span>
+      <button onclick="closeManual()" class="bg-white/15 hover:bg-white/25 text-white font-bold px-3.5 py-1.5 rounded-full text-xs active:scale-95 transition">닫기</button>
+    </div>
+
+    <div class="max-w-2xl mx-auto p-4 sm:p-6 space-y-4 pb-16 break-keep">
+      <div class="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-2">
+        <p class="text-[11px] text-stone-400 font-semibold">사용설명서</p>
+        <h2 class="text-2xl font-extrabold text-stone-900">온도 사용법</h2>
+        <p class="text-sm text-stone-600 leading-relaxed">타이머, 오늘의 명언, 학습 플랜, D-Day, 수능완성 영단어를 한 화면에 모은 고3 자기주도학습 웹앱이에요. 선생님이 학생들을 응원하는 마음으로 만들었어요.</p>
+      </div>
+
+      <div class="bg-white border-2 border-emerald-300 rounded-2xl p-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 text-sm font-bold text-stone-800">
+          <a href="#manual-1" onclick="manualGo(event,'manual-1')" class="underline decoration-stone-400 underline-offset-2">1. 처음 쓰는 분께</a>
+          <a href="#manual-2" onclick="manualGo(event,'manual-2')" class="underline decoration-stone-400 underline-offset-2">2. 홈 화면에 추가하기</a>
+          <a href="#manual-3" onclick="manualGo(event,'manual-3')" class="underline decoration-stone-400 underline-offset-2">3. 타이머와 순공시간</a>
+          <a href="#manual-4" onclick="manualGo(event,'manual-4')" class="underline decoration-stone-400 underline-offset-2">4. 오늘의 명언 · D-Day</a>
+          <a href="#manual-5" onclick="manualGo(event,'manual-5')" class="underline decoration-stone-400 underline-offset-2">5. 수면 기록</a>
+          <a href="#manual-6" onclick="manualGo(event,'manual-6')" class="underline decoration-stone-400 underline-offset-2">6. 학습 플랜 · 루틴 · 쌤 도장</a>
+          <a href="#manual-7" onclick="manualGo(event,'manual-7')" class="underline decoration-stone-400 underline-offset-2">7. 단어 복습</a>
+          <a href="#manual-8" onclick="manualGo(event,'manual-8')" class="underline decoration-stone-400 underline-offset-2">8. 자료 저장과 백업</a>
+          <a href="#manual-9" onclick="manualGo(event,'manual-9')" class="underline decoration-stone-400 underline-offset-2">9. 자주 묻는 것</a>
+        </div>
+      </div>
+
+      <section id="manual-1" class="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-3 scroll-mt-16">
+        <h3 class="text-base font-extrabold text-stone-900">1. 처음 쓰는 분께</h3>
+        <ul class="list-disc pl-5 space-y-2 text-sm text-stone-700 leading-relaxed marker:text-stone-400">
+          <li><b class="text-stone-900">설치도, 회원가입도 필요 없어요.</b> 주소를 열면 바로 쓸 수 있고, 모든 기능이 무료예요.</li>
+          <li><b class="text-stone-900">기록은 내 휴대폰(브라우저)에만 저장돼요.</b> 플래너, 루틴, 수면, 단어 진도는 서버로 보내지 않아서 다른 사람은 볼 수 없어요. 대신 휴대폰을 바꿀 때는 백업이 필요해요(8번).</li>
+          <li>휴대폰은 크롬(안드로이드)이나 사파리(아이폰)를, 컴퓨터는 크롬이나 엣지 최신판을 권해요. 시크릿(InPrivate) 창에서는 창을 닫으면 기록이 사라져요.</li>
+          <li>모든 날짜와 시간은 <b class="text-stone-900">한국 시간</b> 기준이에요. 자정(0시)이 지나면 하루가 새로 시작돼요.</li>
+        </ul>
+      </section>
+
+      <section id="manual-2" class="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-3 scroll-mt-16">
+        <h3 class="text-base font-extrabold text-stone-900">2. 홈 화면에 추가하기</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">홈 화면에 추가하면 앱처럼 한 번에 열 수 있어요.</p>
+        <p class="text-sm font-extrabold text-stone-900">아이폰 (사파리)</p>
+        <ol class="list-decimal pl-5 space-y-1.5 text-sm text-stone-700 leading-relaxed marker:font-bold marker:text-stone-500">
+          <li>사파리에서 온도 주소를 열어요. (크롬 등 다른 브라우저에서는 안 돼요.)</li>
+          <li>화면 아래 <b class="text-stone-900">공유 버튼</b>(네모에서 화살표가 나오는 모양)을 눌러요.</li>
+          <li><b class="text-stone-900">홈 화면에 추가</b>를 누르고 오른쪽 위 <b class="text-stone-900">추가</b>를 눌러요.</li>
+        </ol>
+        <p class="text-sm font-extrabold text-stone-900">안드로이드 (크롬)</p>
+        <ol class="list-decimal pl-5 space-y-1.5 text-sm text-stone-700 leading-relaxed marker:font-bold marker:text-stone-500">
+          <li>크롬에서 온도 주소를 열어요.</li>
+          <li>화면 맨 아래에 나오는 <b class="text-stone-900">홈 화면에 추가하기</b> 버튼을 눌러요.</li>
+          <li>안내 창이 뜨면 <b class="text-stone-900">설치</b>(또는 추가)를 눌러요.</li>
+        </ol>
+        <p class="text-xs text-stone-500 leading-relaxed bg-stone-50 border border-stone-200 rounded-xl p-3">버튼이 안 보여요? 예전에 "나중에 하기"를 눌렀다면 숨겨져 있을 수 있어요. 맨 아래 <b>설정 · 백업</b>에서 <b>설치 안내 다시 보기</b>를 누르면 다시 나와요.</p>
+      </section>
+
+      <section id="manual-3" class="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-3 scroll-mt-16">
+        <h3 class="text-base font-extrabold text-stone-900">3. 타이머와 순공시간</h3>
+        <ul class="list-disc pl-5 space-y-2 text-sm text-stone-700 leading-relaxed marker:text-stone-400">
+          <li><b class="text-stone-900">과목 탭을 먼저 골라요.</b> 몰입 타이머(시간 제한 없음), 국어 80분, 수학 100분, 영어 70분, 영어 50분이 있어요. 모의고사 시간에 맞춰 실전처럼 연습할 수 있어요.</li>
+          <li><b class="text-stone-900">시작을 누르면 시간이 흘러요.</b> 초기화를 누르면 처음 시간으로 돌아가요. 몰입 타이머는 00:00부터 올라가요.</li>
+          <li><b class="text-stone-900">화면이 꺼져도, 다른 앱을 봐도 계속 가요.</b> 실제 시각을 기준으로 계산해서, 다시 열면 흐른 시간만큼 정확히 반영돼요.</li>
+          <li><b class="text-stone-900">오늘 누적 순공시간</b>은 오늘(한국 시간) 공부한 시간만 보여 줘요. 자정이 지나면 0부터 다시 시작해요. <b class="text-stone-900">(그래프 보기)</b>를 누르면 최근 7일 기록을 볼 수 있어요.</li>
+        </ul>
+      </section>
+
+      <section id="manual-4" class="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-3 scroll-mt-16">
+        <h3 class="text-base font-extrabold text-stone-900">4. 오늘의 명언 · D-Day</h3>
+        <ul class="list-disc pl-5 space-y-2 text-sm text-stone-700 leading-relaxed marker:text-stone-400">
+          <li><b class="text-stone-900">명언은 매일 바뀌어요.</b> 100개의 명언이 한국 시간 자정마다 하나씩 돌아가며 나와요. 앱을 열면 팝업으로 먼저 보여 줘요.</li>
+          <li>팝업이 번거로우면 <b class="text-stone-900">오늘 하루 동안 보지 않기</b>를 눌러요. 다시 보고 싶으면 <b class="text-stone-900">팝업 다시보기</b>를 눌러요.</li>
+          <li>위쪽 <b class="text-stone-900">명언함</b>에서 지난 명언을 모두 볼 수 있어요.</li>
+          <li><b class="text-stone-900">핵심 D-Day</b>에는 수능까지 남은 날이 자동으로 계산돼요. <b class="text-stone-900">일정 관리</b>에서 모의고사, 면접 같은 내 일정을 추가하거나 지울 수 있어요.</li>
+        </ul>
+      </section>
+
+      <section id="manual-5" class="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-3 scroll-mt-16">
+        <h3 class="text-base font-extrabold text-stone-900">5. 수면 기록</h3>
+        <ul class="list-disc pl-5 space-y-2 text-sm text-stone-700 leading-relaxed marker:text-stone-400">
+          <li><b class="text-stone-900">자기 전에 취침, 일어나서 기상</b> 버튼만 누르면 수면 시간이 기록돼요.</li>
+          <li>깜빡하고 못 눌렀다면 <b class="text-stone-900">시간 직접 입력</b>에서 취침·기상 시각을 고쳐 저장해요. <b class="text-stone-900">리셋</b>을 누르면 어젯밤 기록을 지워요.</li>
+          <li><b class="text-stone-900">(그래프 보기)</b>를 누르면 최근 7일 수면 시간을 막대그래프로 볼 수 있어요. 규칙적인 수면이 제일 중요해요.</li>
+        </ul>
+      </section>
+
+      <section id="manual-6" class="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-3 scroll-mt-16">
+        <h3 class="text-base font-extrabold text-stone-900">6. 학습 플랜 · 루틴 · 쌤 도장</h3>
+        <ul class="list-disc pl-5 space-y-2 text-sm text-stone-700 leading-relaxed marker:text-stone-400">
+          <li><b class="text-stone-900">학습 플랜</b>: 과목(국어, 수학, 영어, 탐구, 기타)을 고르고 오늘 끝낼 분량을 적어 <b class="text-stone-900">추가</b>를 눌러요. 다 하면 체크해요. 새싹이 표정도 달라져요.</li>
+          <li><b class="text-stone-900">루틴 만들기</b>: 매일 반복할 습관(예: 아침 기상, 산책)을 직접 적어 추가해요. 필요 없는 건 휴지통으로 지워요.</li>
+          <li><b class="text-stone-900">쌤 도장</b>: 그날 학습 플랜이나 루틴을 <b class="text-stone-900">전부 체크하면</b> 달력에 쌤 도장이 찍혀요. 선생님이 늘 함께 지켜보고 있다는 뜻이에요.</li>
+          <li><b class="text-stone-900">달력 보기</b>를 누르면 이번 달 도장을 볼 수 있어요. 제목 양옆 <b class="text-stone-900">‹ ›</b> 버튼으로 지난 달 기록도 넘겨 볼 수 있어요.</li>
+        </ul>
+      </section>
+
+      <section id="manual-7" class="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-3 scroll-mt-16">
+        <h3 class="text-base font-extrabold text-stone-900">7. 단어 복습</h3>
+        <ul class="list-disc pl-5 space-y-2 text-sm text-stone-700 leading-relaxed marker:text-stone-400">
+          <li>EBS 수능완성에서 뽑은 <b class="text-stone-900">966개 단어</b>가 뜻, 예문, 교재 쪽수와 함께 들어 있어요.</li>
+          <li><b class="text-stone-900">오늘 단어 복습 시작</b>을 누르고, 카드를 눌러 뜻과 예문을 확인해요.</li>
+          <li>카드마다 <b class="text-stone-900">다시</b>(모르겠어요), <b class="text-stone-900">헷갈림</b>(애매해요), <b class="text-stone-900">알아요</b>(확실해요) 중 하나를 눌러요. 온도가 기억해 두었다가 다시 봐야 할 단어를 복습 날짜에 맞춰 보여 줘요.</li>
+          <li><b class="text-stone-900">오늘 복습 · 복습 예정 · 외운 단어</b> 숫자로 진도를 한눈에 볼 수 있어요. <b class="text-stone-900">전체 단어 목록 보기</b>에서는 단어나 뜻을 검색할 수 있어요.</li>
+        </ul>
+      </section>
+
+      <section id="manual-8" class="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-3 scroll-mt-16">
+        <h3 class="text-base font-extrabold text-stone-900">8. 자료 저장과 백업</h3>
+        <ul class="list-disc pl-5 space-y-2 text-sm text-stone-700 leading-relaxed marker:text-stone-400">
+          <li>입력한 내용은 <b class="text-stone-900">자동으로 이 휴대폰에 저장</b>돼요. 저장 버튼을 따로 누르지 않아도 돼요.</li>
+          <li>브라우저 기록(사이트 데이터)을 지우거나 휴대폰을 바꾸면 기록이 사라져요. 맨 아래 <b class="text-stone-900">설정 · 백업</b>에서 <b class="text-stone-900">백업 파일 받기</b>로 파일을 저장해 두세요.</li>
+          <li>새 휴대폰에서는 <b class="text-stone-900">백업 불러오기</b>로 파일을 골라 그대로 이어서 쓸 수 있어요. 불러오면 지금 기기의 기록은 덮어써져요.</li>
+          <li><b class="text-stone-900">친구에게 초대하기</b>로 이 앱의 주소를 친구에게 보낼 수 있어요.</li>
+        </ul>
+      </section>
+
+      <section id="manual-9" class="bg-white border-2 border-emerald-300 rounded-2xl p-5 space-y-4 scroll-mt-16">
+        <h3 class="text-base font-extrabold text-stone-900">9. 자주 묻는 것</h3>
+        <div class="space-y-1">
+          <p class="text-sm font-extrabold text-stone-900">어제 쓴 기록이 안 보여요.</p>
+          <p class="text-sm text-stone-700 leading-relaxed">다른 기기, 다른 브라우저, 시크릿 창으로 열지 않았는지 확인해요. 기록은 처음 쓴 브라우저에만 있어요. 백업 파일이 있다면 불러오기로 되살릴 수 있어요.</p>
+        </div>
+        <div class="space-y-1">
+          <p class="text-sm font-extrabold text-stone-900">시간이 하루 늦게 바뀌거나 이상해요.</p>
+          <p class="text-sm text-stone-700 leading-relaxed">온도는 휴대폰 설정과 상관없이 항상 한국 시간으로 날짜를 계산해요. 페이지를 새로고침하면 바로 맞춰져요.</p>
+        </div>
+        <div class="space-y-1">
+          <p class="text-sm font-extrabold text-stone-900">타이머를 켜 두고 화면을 껐는데 괜찮나요?</p>
+          <p class="text-sm text-stone-700 leading-relaxed">괜찮아요. 시작한 시각을 기억해 두었다가 다시 열면 실제로 흐른 시간만큼 반영해요.</p>
+        </div>
+        <div class="space-y-1">
+          <p class="text-sm font-extrabold text-stone-900">내 기록을 선생님이나 다른 사람이 볼 수 있나요?</p>
+          <p class="text-sm text-stone-700 leading-relaxed">아니요. 학습 기록은 내 휴대폰 안에만 있고 서버로 보내지 않아요. 맨 아래 <b>누적 방문</b> 숫자만 누가 열었는지 알 수 없는 익명 방문 횟수로 집계돼요.</p>
+        </div>
+        <div class="space-y-1">
+          <p class="text-sm font-extrabold text-stone-900">컴퓨터에서도 되나요?</p>
+          <p class="text-sm text-stone-700 leading-relaxed">네. 화면이 넓으면 두 칸으로 나뉘어 보여요. 컴퓨터 기록도 그 컴퓨터 브라우저에만 저장돼요.</p>
+        </div>
+      </section>
+
+      <button onclick="closeManual()" class="w-full bg-[#2E6B5B] hover:bg-emerald-900 text-white py-3.5 rounded-2xl text-sm font-extrabold active:scale-95 shadow-md transition">온도 시작하기</button>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT LOGIC -->
   <script>
+    function openManual() {
+      const v = document.getElementById('manual-view');
+      v.classList.remove('hidden');
+      v.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    }
+    function closeManual() {
+      document.getElementById('manual-view').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    function manualGo(e, id) {
+      e.preventDefault();
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
     // --- 0. KOREA TIME HELPERS (모든 "오늘" 판단은 한국시간 기준) ---
     function nowKST() {
       return new Date(Date.now() + 9 * 60 * 60000);
