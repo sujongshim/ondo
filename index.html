@@ -92,11 +92,7 @@
       </div>
       
       <div class="flex items-center gap-1.5 shrink-0">
-        <!-- 🟡 노랑 명언함 버튼 -->
         <button onclick="openManual()" class="text-white font-bold px-1 py-1.5 text-[11px] underline underline-offset-4 hover:text-emerald-200 transition active:scale-95 shrink-0 whitespace-nowrap">사용설명서</button>
-        <button onclick="openQuoteArchiveModal()" class="bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold px-2.5 py-1.5 rounded-full text-[11px] flex items-center gap-1.5 shadow-sm transition active:scale-95 shrink-0 whitespace-nowrap">
-          <span>명언함</span>
-        </button>
         <!-- D-Day 목록 (수능만 표시) -->
         <div id="header-dday-list" onclick="openDDayModal()" class="flex items-center gap-1.5 cursor-pointer shrink-0 whitespace-nowrap"></div>
       </div>
@@ -113,9 +109,14 @@
         <span class="text-xs bg-emerald-100 text-emerald-900 font-extrabold px-3 py-1.5 rounded-xl border border-emerald-200">
           오늘의 명언
         </span>
-        <button onclick="openQuotePopup(true)" class="text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold px-3 py-1.5 rounded-xl border border-amber-200 shrink-0 transition active:scale-95">
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button onclick="openQuoteArchiveModal()" class="text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold px-3 py-1.5 rounded-xl border border-amber-200 shrink-0 transition active:scale-95">
+            명언함
+          </button>
+          <button onclick="openQuotePopup(true)" class="text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold px-3 py-1.5 rounded-xl border border-amber-200 shrink-0 transition active:scale-95">
           팝업 다시보기
         </button>
+        </div>
       </div>
       <div class="font-medium text-stone-800 leading-snug">
         <span id="banner-quote-text" class="font-serif font-bold text-stone-900 text-base">"승리는 가장 끈기 있는 자에게 돌아간다."</span>
